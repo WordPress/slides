@@ -63,6 +63,11 @@ div[data-type="slide/slide"] {
 	max-width: none !important;
 }
 
+.block-editor-default-block-appender textarea.block-editor-default-block-appender__content {
+	font-size: inherit;
+	height: auto !important;
+}
+
 .block-editor-block-list__block[data-type="core/paragraph"] p {
 	line-height: inherit;
 }

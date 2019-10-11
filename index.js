@@ -10,7 +10,7 @@
   components
 }) => {
   const { __ } = i18n;
-  const { registerBlockType, setDefaultBlockName } = blocks;
+  const { registerBlockType } = blocks;
   const { InnerBlocks, InspectorControls, RichTextToolbarButton } = editor;
   const { createElement: e, Fragment } = element;
   const { registerFormatType, toggleFormat } = richText;
@@ -45,8 +45,8 @@ ${cssPrefix} > .block-editor-block-list__block-edit:before {
 
 ${cssPrefix} section {
     color: ${meta[colorKey]};
-    font-size: ${meta[fontSizeKey]||'42'}px;
-    font-family: ${meta[fontFamilyKey]||'Helvetica, sans-serif'};
+    font-size: ${meta[fontSizeKey] || '42'}px;
+    font-family: ${meta[fontFamilyKey] || 'Helvetica, sans-serif'};
 }
 `
         ),
@@ -145,8 +145,6 @@ ${cssPrefix} section {
         }
       }, e(InnerBlocks.Content))
   });
-
-  setDefaultBlockName('slide/slide');
 
   registerFormatType('slide/fragment', {
     title: __('Slide Fragment', 'slide'),
