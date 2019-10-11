@@ -33,7 +33,9 @@
       return;
     }
 
-    const slide = createBlock('slide/slide', {}, [createBlock(block.name, block.attributes)]);
+    const slide = createBlock('slide/slide', {}, [
+      createBlock(block.name, block.attributes)
+    ]);
 
     dispatch('core/block-editor').replaceBlock(block.clientId, slide);
   });
@@ -177,6 +179,12 @@ ${cssPrefix} section {
 
   function resize () {
     const element = document.querySelector('.block-editor-writing-flow');
+
+    if (!element) {
+      window.requestAnimationFrame(resize);
+      return;
+    }
+
     const width = element.clientWidth;
     const margin = width / 33;
     const parentWidth = element.parentNode.clientWidth - margin * 2;
