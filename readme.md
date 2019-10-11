@@ -20,3 +20,4 @@ Requires the latest [Gutenberg](https://wordpress.org/plugins/gutenberg/) releas
 * Currently the styling options are limited, but you can add your own CSS rules.
 * You import a font by adding e.g. `@import url('https://fonts.googleapis.com/css?family=...');` above any other rules.
 * You can also set a background color for individual slides!
+* More options coming soon!
