@@ -13,7 +13,10 @@ Allows you to create presentations with the WordPress block editor.
 
 ## Description
 
-Requires the latest Gutenberg release!
+Requires the latest [Gutenberg](https://wordpress.org/plugins/gutenberg/) release!
 
-* Creates a custom post type "Presentation", which will render as a presentation on the front end.
+* Creates a custom post type "Presentation", which will render as a presentation on the front end using [Reveal.js](https://revealjs.com).
 * Enables the block editor with a "Slide" block, which can be used as a container for each slide in the presentation.
+* Currently the styling options are limited, but you can add your own CSS rules.
+* You import a font by adding e.g. `@import url('https://fonts.googleapis.com/css?family=...');` above any other rules.
+* You can also set a background color for individual slides!

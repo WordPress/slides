@@ -17,7 +17,10 @@ add_action( 'admin_notices', function() {
 	if ( ! $has_gutenberg ) {
 		?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php _e( '"Slide" needs the "Gutenberg" plugin to be active.', 'slide' ); ?></p>
+			<p><?php echo wp_sprintf(
+				__( '"Slide" needs %s to be active.', 'slide' ),
+				'<a href="' . esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=gutenberg' ) ) . '">Gutenberg</a>'
+			); ?></p>
 		</div>
 		<?php
 		return;
@@ -28,7 +31,7 @@ add_action( 'admin_notices', function() {
 	if ( version_compare( $data[ 'Version' ], '6.6' ) === -1 ) {
 		?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php _e( '"Slide" needs "Gutenberg" version 6.6.', 'slide' ); ?></p>
+			<p><?php _e( '"Slide" needs "Gutenberg" version 6.6. Please update.', 'slide' ); ?></p>
 		</div>
 		<?php
 	}
