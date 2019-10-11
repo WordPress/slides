@@ -1,0 +1,9 @@
+{
+    "name": "slides",
+    "devDependencies": {
+        "semistandard": "*"
+    },
+    "scripts": {
+        "test": "semistandard --fix"
+    }
+}
