@@ -123,6 +123,8 @@ add_action( 'init', function() {
 		'background-color',
 		'font-size',
 		'font-family',
+		'transition',
+		'transition-speed',
 	) as $key ) {
 		register_post_meta( 'presentation', "presentation-$key", array(
 			'show_in_rest' => true,

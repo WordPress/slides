@@ -17,12 +17,14 @@
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
-  const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl } = components;
+  const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl } = components;
   const colorKey = 'presentation-color';
   const bgColorKey = 'presentation-background-color';
   const cssKey = 'presentation-css';
   const fontSizeKey = 'presentation-font-size';
   const fontFamilyKey = 'presentation-font-family';
+  const transitionKey = 'presentation-transition';
+  const transitionSpeedKey = 'presentation-transition-speed';
   const cssPrefix = '.block-editor-block-list__layout .block-editor-block-list__block[data-type="slide/slide"]';
 
   subscribe(() => {
@@ -117,6 +119,37 @@ ${cssPrefix} section {
             help: __('Please prefix all rules with "section.wp-block-slide-slide"!', 'slide'),
             value: meta[cssKey] || 'section.wp-block-slide-slide {}',
             onChange: (value) => updateMeta(value, cssKey)
+          })
+        ),
+        e(
+          PluginDocumentSettingPanel,
+          {
+            name: 'slide-transition',
+            title: __('Transition', 'slide'),
+            icon: 'leftright'
+          },
+          e(SelectControl, {
+            label: __('Transition Style', 'slide'),
+            options: [
+              { value: 'none', label: __('None', 'slide') },
+              { value: 'fade', label: __('Fade', 'slide') },
+              { value: 'slide', label: __('Slide', 'slide') },
+              { value: 'convex', label: __('Convex', 'slide') },
+              { value: 'concave', label: __('Concave', 'slide') },
+              { value: 'zoom', label: __('Zoom', 'slide') }
+            ],
+            value: meta[transitionKey],
+            onChange: (value) => updateMeta(value, transitionKey)
+          }),
+          e(SelectControl, {
+            label: __('Transition Speed', 'slide'),
+            options: [
+              { value: 'default', label: __('Default', 'slide') },
+              { value: 'fast', label: __('Fast', 'slide') },
+              { value: 'slow', label: __('Slow', 'slide') }
+            ],
+            value: meta[transitionSpeedKey],
+            onChange: (value) => updateMeta(value, transitionSpeedKey)
           })
         )
       ];
