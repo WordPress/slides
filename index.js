@@ -33,7 +33,9 @@
       return;
     }
 
-    dispatch('core/block-editor').replaceBlock(block.clientId, createBlock('slide/slide'));
+    const slide = createBlock('slide/slide', {}, [createBlock(block.name, block.attributes)]);
+
+    dispatch('core/block-editor').replaceBlock(block.clientId, slide);
   });
 
   registerPlugin('slide', {
