@@ -209,3 +209,11 @@ add_action( 'admin_bar_menu', function ( $wp_admin_bar ) {
 		'href'  => '#',
 	) );
 }, 99999 );
+
+add_filter( 'default_content', function( $post_content, $post ) {
+	if ( $post->post_type !== 'presentation' ) {
+		return;
+	}
+
+	return "<!-- wp:slide/slide -->\n<section class=\"wp-block-slide-slide\"></section>\n<!-- /wp:slide/slide -->";
+}, 10, 2 );
