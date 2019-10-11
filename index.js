@@ -10,13 +10,13 @@
   components
 }) => {
   const { __ } = i18n;
-  const { registerBlockType } = blocks;
+  const { registerBlockType, createBlock } = blocks;
   const { InnerBlocks, InspectorControls, RichTextToolbarButton } = editor;
   const { createElement: e, Fragment } = element;
   const { registerFormatType, toggleFormat } = richText;
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
-  const { useSelect, useDispatch } = data;
+  const { useSelect, useDispatch, subscribe, select, dispatch } = data;
   const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl } = components;
   const colorKey = 'presentation-color';
   const bgColorKey = 'presentation-background-color';
@@ -24,6 +24,17 @@
   const fontSizeKey = 'presentation-font-size';
   const fontFamilyKey = 'presentation-font-family';
   const cssPrefix = '.block-editor-block-list__layout .block-editor-block-list__block[data-type="slide/slide"]';
+
+  subscribe(() => {
+    const blocks = select('core/block-editor').getBlocks();
+    const block = blocks.find(({ name }) => name !== 'slide/slide');
+
+    if (!block) {
+      return;
+    }
+
+    dispatch('core/block-editor').replaceBlock(block.clientId, createBlock('slide/slide'));
+  });
 
   registerPlugin('slide', {
     render: () => {
