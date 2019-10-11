@@ -125,6 +125,8 @@ add_action( 'init', function() {
 		'font-family',
 		'transition',
 		'transition-speed',
+		'controls',
+		'progress',
 	) as $key ) {
 		register_post_meta( 'presentation', "presentation-$key", array(
 			'show_in_rest' => true,

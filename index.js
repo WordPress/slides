@@ -17,7 +17,7 @@
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
-  const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl } = components;
+  const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl, ToggleControl } = components;
   const colorKey = 'presentation-color';
   const bgColorKey = 'presentation-background-color';
   const cssKey = 'presentation-css';
@@ -25,6 +25,8 @@
   const fontFamilyKey = 'presentation-font-family';
   const transitionKey = 'presentation-transition';
   const transitionSpeedKey = 'presentation-transition-speed';
+  const controlsKey = 'presentation-controls';
+  const progressKey = 'presentation-progress';
   const cssPrefix = '.block-editor-block-list__layout .block-editor-block-list__block[data-type="slide/slide"]';
 
   subscribe(() => {
@@ -126,7 +128,7 @@ ${cssPrefix} section {
           {
             name: 'slide-transition',
             title: __('Transition', 'slide'),
-            icon: 'leftright'
+            icon: 'slides'
           },
           e(SelectControl, {
             label: __('Transition Style', 'slide'),
@@ -150,6 +152,24 @@ ${cssPrefix} section {
             ],
             value: meta[transitionSpeedKey],
             onChange: (value) => updateMeta(value, transitionSpeedKey)
+          })
+        ),
+        e(
+          PluginDocumentSettingPanel,
+          {
+            name: 'slide-controls',
+            title: __('Controls', 'slide'),
+            icon: 'leftright'
+          },
+          e(ToggleControl, {
+            label: __('Control Arrows', 'slide'),
+            checked: meta[controlsKey] === 'true',
+            onChange: (value) => updateMeta(value + '', controlsKey)
+          }),
+          e(ToggleControl, {
+            label: __('Progress Bar', 'slide'),
+            checked: meta[progressKey] === 'true',
+            onChange: (value) => updateMeta(value + '', progressKey)
           })
         )
       ];

@@ -50,6 +50,11 @@
 			text-align: inherit;
 		}
 
+		.reveal .controls,
+		.reveal .progress {
+			color: currentColor;
+		}
+
 		.wp-block-slide-slide img,
 		.wp-block-slide-slide video,
 		.wp-block-slide-slide iframe {
@@ -77,8 +82,8 @@
 		Reveal.initialize( {
 			transition: '<?php echo get_post_meta( get_the_ID(), 'presentation-transition', true ) ?: 'none'; ?>',
 			transitionSpeed: '<?php echo get_post_meta( get_the_ID(), 'presentation-transition-speed', true ) ?: 'default'; ?>',
-			controls: false,
-			progress: false,
+			controls: <?php echo get_post_meta( get_the_ID(), 'presentation-controls', true ) ?: 'false'; ?>,
+			progress: <?php echo get_post_meta( get_the_ID(), 'presentation-progress', true ) ?: 'false'; ?>,
 			hash: true,
 			history: true,
 			preloadIframes: true,
