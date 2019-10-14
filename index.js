@@ -57,13 +57,9 @@
       return [
         e('style', null,
 `
-${cssPrefix} > .block-editor-block-list__block-edit:before {
-    outline: 1px solid black;
-    background: ${meta[bgColorKey]};
-}
-
 ${cssPrefix} section {
     color: ${meta[colorKey]};
+    background: ${meta[bgColorKey]};
     font-size: ${meta[fontSizeKey] || '42'}px;
     font-family: ${meta[fontFamilyKey] || 'Helvetica, sans-serif'};
 }
@@ -91,6 +87,7 @@ ${cssPrefix} section {
             onChange: (value) => updateMeta(value, fontFamilyKey)
           }),
           e(ColorPicker, {
+            disableAlpha: true,
             label: __('Color', 'slide'),
             color: meta[colorKey],
             onChangeComplete: (value) => updateMeta(value.hex, colorKey)
@@ -104,6 +101,7 @@ ${cssPrefix} section {
             icon: 'art'
           },
           e(ColorPicker, {
+            disableAlpha: true,
             label: __('Background Color', 'slide'),
             color: meta[bgColorKey],
             onChangeComplete: (value) => updateMeta(value.hex, bgColorKey)
@@ -184,34 +182,58 @@ ${cssPrefix} section {
     attributes: {
       notes: {
         type: 'string'
+      },
+      backgroundColor: {
+        type: 'string'
       }
     },
     edit: ({ attributes, setAttributes, className }) =>
-      e(Fragment, null,
-        e(InspectorControls, null,
-          e(PanelBody, {
-            title: __('Slide Notes', 'slide')
-          },
-          e(TextareaControl, {
-            label: __('Anything you want to remember.', 'slide'),
-            value: attributes.notes,
-            onChange: (notes) => setAttributes({ notes })
-          })
+      e(
+        Fragment,
+        null,
+        e(
+          InspectorControls,
+          null,
+          e(
+            PanelBody,
+            { title: __('Slide Notes', 'slide') },
+            e(TextareaControl, {
+              label: __('Anything you want to remember.', 'slide'),
+              value: attributes.notes,
+              onChange: (notes) => setAttributes({ notes })
+            })
+          ),
+          e(
+            PanelBody,
+            { title: __('Background', 'slide') },
+            e(ColorPicker, {
+              disableAlpha: true,
+              label: __('Background Color', 'slide'),
+              color: attributes.backgroundColor,
+              onChangeComplete: ({ hex: backgroundColor }) =>
+                setAttributes({ backgroundColor })
+            })
           )
         ),
-        e('section', {
-          className,
-          style: {
-            backgroundColor: attributes.backgroundColor
-          }
-        }, e(InnerBlocks))
+        e(
+          'section',
+          {
+            className,
+            style: {
+              backgroundColor: attributes.backgroundColor
+            }
+          },
+          e(InnerBlocks)
+        )
       ),
     save: ({ attributes }) =>
-      e('section', {
-        style: {
-          backgroundColor: attributes.backgroundColor
-        }
-      }, e(InnerBlocks.Content))
+      e(
+        'section',
+        {
+          'data-background-color': attributes.backgroundColor
+        },
+        e(InnerBlocks.Content)
+      )
   });
 
   registerFormatType('slide/fragment', {
