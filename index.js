@@ -187,6 +187,9 @@ ${cssPrefix} section {
       notes: {
         type: 'string'
       },
+      color: {
+        type: 'string'
+      },
       backgroundColor: {
         type: 'string'
       },
@@ -221,6 +224,21 @@ ${cssPrefix} section {
               label: __('Anything you want to remember.', 'slide'),
               value: attributes.notes,
               onChange: (notes) => setAttributes({ notes })
+            })
+          ),
+          e(
+            PanelBody,
+            {
+              title: __('Font', 'slide'),
+              icon: 'text',
+              initialOpen: false
+            },
+            e(ColorPicker, {
+              disableAlpha: true,
+              label: __('Color', 'slide'),
+              color: attributes.color,
+              onChangeComplete: ({ hex: color }) =>
+                setAttributes({ color })
             })
           ),
           e(
@@ -313,7 +331,8 @@ ${cssPrefix} section {
           {
             className,
             style: {
-              backgroundColor: attributes.backgroundColor
+              color: attributes.color || undefined,
+              backgroundColor: attributes.backgroundColor || undefined
             }
           },
           e(
@@ -334,7 +353,10 @@ ${cssPrefix} section {
     save: ({ attributes }) => e(
       'section',
       {
-        'data-background-color': attributes.backgroundColor,
+        style: {
+          color: attributes.color || undefined
+        },
+        'data-background-color': attributes.backgroundColor || undefined,
         'data-background-image': attributes.backgroundUrl ? attributes.backgroundUrl : undefined,
         'data-background-position': attributes.focalPoint ? `${attributes.focalPoint.x * 100}% ${attributes.focalPoint.y * 100}%` : undefined,
         'data-background-opacity': attributes.backgroundOpacity ? attributes.backgroundOpacity / 100 : undefined
