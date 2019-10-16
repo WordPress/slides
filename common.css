@@ -33,8 +33,3 @@ section.wp-block-slide-slide h4 {
 section.wp-block-slide-slide p {
 	margin: 20px 0;
 }
-
-/* To do: remove. Needed for old presentation. */
-.wp-block-slide-slide .slide-fragment-fade {
-	opacity: 0.1;
-}
