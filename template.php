@@ -9,11 +9,16 @@
 			top: 3px;
 		}
 
-		.dashicons, .dashicons-before:before {
+		/* To do: remove. Needed for old presentation. */
+		.wp-block-slide-slide .dashicons,
+		.wp-block-slide-slide .dashicons-before:before {
 			font-family: dashicons !important;
 			font-style: normal !important;
 			padding: 10px 30px 10px 0 !important;
 			color: #eb0569;
+			width: 40px;
+			height: 40px;
+			font-size: 40px;
 		}
 
 		.wp-block-image, figure {
