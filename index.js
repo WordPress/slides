@@ -19,7 +19,7 @@
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
   const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl, ToggleControl, Button, FocalPointPicker } = components;
-  const { MediaUpload } = blockEditor;
+  const { MediaUpload, __experimentalGradientPickerControl } = blockEditor;
   const colorKey = 'presentation-color';
   const bgColorKey = 'presentation-background-color';
   const cssKey = 'presentation-css';
@@ -102,12 +102,16 @@ ${cssPrefix} section {
             title: __('Background', 'slide'),
             icon: 'art'
           },
+          e( __experimentalGradientPickerControl, {
+            onChange: ( value ) => updateMeta(value, bgColorKey),
+            value: meta[bgColorKey],
+          } ),
           e(ColorPicker, {
             disableAlpha: true,
             label: __('Background Color', 'slide'),
             color: meta[bgColorKey],
             onChangeComplete: (value) => updateMeta(value.hex, bgColorKey)
-          })
+          }),
         ),
         e(
           PluginDocumentSettingPanel,

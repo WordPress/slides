@@ -28,10 +28,10 @@ add_action( 'admin_notices', function() {
 
 	$data = get_plugin_data( WP_PLUGIN_DIR . '/gutenberg/gutenberg.php' );
 
-	if ( version_compare( $data[ 'Version' ], '6.6' ) === -1 ) {
+	if ( version_compare( $data[ 'Version' ], '6.7' ) === -1 ) {
 		?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php _e( '"Slide" needs "Gutenberg" version 6.6. Please update.', 'slide' ); ?></p>
+			<p><?php _e( '"Slide" needs "Gutenberg" version 6.7. Please update.', 'slide' ); ?></p>
 		</div>
 		<?php
 	}
