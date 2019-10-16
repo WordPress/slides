@@ -12,14 +12,14 @@
 }) => {
   const { __ } = i18n;
   const { registerBlockType, createBlock } = blocks;
-  const { InnerBlocks, InspectorControls, RichTextToolbarButton } = editor;
+  const { RichTextToolbarButton } = editor;
   const { createElement: e, Fragment } = element;
   const { registerFormatType, toggleFormat } = richText;
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
   const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl, ToggleControl, Button, FocalPointPicker } = components;
-  const { MediaUpload, __experimentalGradientPickerControl } = blockEditor;
+  const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls } = blockEditor;
   const colorKey = 'presentation-color';
   const bgColorKey = 'presentation-background-color';
   const cssKey = 'presentation-css';
@@ -102,16 +102,16 @@ ${cssPrefix} section {
             title: __('Background', 'slide'),
             icon: 'art'
           },
-          e( __experimentalGradientPickerControl, {
-            onChange: ( value ) => updateMeta(value, bgColorKey),
-            value: meta[bgColorKey],
-          } ),
+          e(__experimentalGradientPickerControl, {
+            onChange: (value) => updateMeta(value, bgColorKey),
+            value: meta[bgColorKey]
+          }),
           e(ColorPicker, {
             disableAlpha: true,
             label: __('Background Color', 'slide'),
             color: meta[bgColorKey],
             onChangeComplete: (value) => updateMeta(value.hex, bgColorKey)
-          }),
+          })
         ),
         e(
           PluginDocumentSettingPanel,
