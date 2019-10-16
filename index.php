@@ -55,6 +55,7 @@ add_action( 'enqueue_block_editor_assets', function() {
 			'wp-edit-post',
 			'wp-data',
 			'wp-components',
+			'wp-block-editor',
 		),
 		filemtime( dirname( __FILE__ ) . '/index.js' ),
 		true

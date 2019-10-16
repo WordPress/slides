@@ -7,7 +7,8 @@
   plugins,
   editPost,
   data,
-  components
+  components,
+  blockEditor
 }) => {
   const { __ } = i18n;
   const { registerBlockType, createBlock } = blocks;
@@ -17,7 +18,8 @@
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
-  const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl, ToggleControl } = components;
+  const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl, ToggleControl, Button, FocalPointPicker } = components;
+  const { MediaUpload } = blockEditor;
   const colorKey = 'presentation-color';
   const bgColorKey = 'presentation-background-color';
   const cssKey = 'presentation-css';
@@ -174,6 +176,8 @@ ${cssPrefix} section {
     }
   });
 
+  const ALLOWED_MEDIA_TYPES = ['image'];
+
   registerBlockType('slide/slide', {
     title: __('Slide', 'slide'),
     icon: 'slides',
@@ -184,6 +188,18 @@ ${cssPrefix} section {
         type: 'string'
       },
       backgroundColor: {
+        type: 'string'
+      },
+      backgroundId: {
+        type: 'string'
+      },
+      backgroundUrl: {
+        type: 'string'
+      },
+      focalPoint: {
+        type: 'object'
+      },
+      backgroundOpacity: {
         type: 'string'
       }
     },
@@ -196,7 +212,11 @@ ${cssPrefix} section {
           null,
           e(
             PanelBody,
-            { title: __('Slide Notes', 'slide') },
+            {
+              title: __('Slide Notes', 'slide'),
+              icon: 'edit',
+              initialOpen: false
+            },
             e(TextareaControl, {
               label: __('Anything you want to remember.', 'slide'),
               value: attributes.notes,
@@ -205,13 +225,86 @@ ${cssPrefix} section {
           ),
           e(
             PanelBody,
-            { title: __('Background', 'slide') },
+            {
+              title: __('Background Color', 'slide'),
+              icon: 'art',
+              initialOpen: false
+            },
             e(ColorPicker, {
               disableAlpha: true,
               label: __('Background Color', 'slide'),
               color: attributes.backgroundColor,
               onChangeComplete: ({ hex: backgroundColor }) =>
                 setAttributes({ backgroundColor })
+            }),
+            !!attributes.backgroundUrl && e(RangeControl, {
+              label: __('Opacity', 'slide'),
+              value: 100 - parseInt(attributes.backgroundOpacity, 10),
+              min: 0,
+              max: 100,
+              onChange: (value) => setAttributes({
+                backgroundOpacity: 100 - value + ''
+              })
+            })
+          ),
+          e(
+            PanelBody,
+            {
+              title: __('Background Image', 'slide'),
+              icon: 'format-image',
+              initialOpen: false
+            },
+            e(MediaUpload, {
+              onSelect: (media) => {
+                if (!media || !media.url) {
+                  setAttributes({
+                    backgroundUrl: undefined,
+                    backgroundId: undefined,
+                    backgroundPosition: undefined,
+                    backgroundOpacity: undefined
+                  });
+                  return;
+                }
+
+                setAttributes({
+                  backgroundUrl: media.url,
+                  backgroundId: media.id
+                });
+              },
+              allowedTypes: ALLOWED_MEDIA_TYPES,
+              value: attributes.backgroundId,
+              render: ({ open }) => e(Button, {
+                isDefault: true,
+                onClick: open
+              }, attributes.backgroundUrl ? __('Change') : __('Add Background Image'))
+            }),
+            ' ',
+            !!attributes.backgroundUrl && e(Button, {
+              isDefault: true,
+              onClick: () => {
+                setAttributes({
+                  backgroundUrl: undefined,
+                  backgroundId: undefined,
+                  backgroundPosition: undefined,
+                  backgroundOpacity: undefined
+                });
+              }
+            }, __('Remove')),
+            e('br'), e('br'),
+            !!attributes.backgroundUrl && e(FocalPointPicker, {
+              label: __('Focal Point Picker'),
+              url: attributes.backgroundUrl,
+              value: attributes.focalPoint,
+              onChange: (focalPoint) => setAttributes({ focalPoint })
+            }),
+            !!attributes.backgroundUrl && e(RangeControl, {
+              label: __('Opacity', 'slide'),
+              value: parseInt(attributes.backgroundOpacity, 10),
+              min: 0,
+              max: 100,
+              onChange: (value) => setAttributes({
+                backgroundOpacity: value + ''
+              })
             })
           )
         ),
@@ -223,17 +316,31 @@ ${cssPrefix} section {
               backgroundColor: attributes.backgroundColor
             }
           },
+          e(
+            'div',
+            {
+              className: 'wp-block-slide-slide__background',
+              style: {
+                backgroundImage: attributes.backgroundUrl ? `url("${attributes.backgroundUrl}")` : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: attributes.focalPoint ? `${attributes.focalPoint.x * 100}% ${attributes.focalPoint.y * 100}%` : '50% 50%',
+                opacity: attributes.backgroundOpacity ? attributes.backgroundOpacity / 100 : undefined
+              }
+            }
+          ),
           e(InnerBlocks)
         )
       ),
-    save: ({ attributes }) =>
-      e(
-        'section',
-        {
-          'data-background-color': attributes.backgroundColor
-        },
-        e(InnerBlocks.Content)
-      )
+    save: ({ attributes }) => e(
+      'section',
+      {
+        'data-background-color': attributes.backgroundColor,
+        'data-background-image': attributes.backgroundUrl ? attributes.backgroundUrl : undefined,
+        'data-background-position': attributes.focalPoint ? `${attributes.focalPoint.x * 100}% ${attributes.focalPoint.y * 100}%` : undefined,
+        'data-background-opacity': attributes.backgroundOpacity ? attributes.backgroundOpacity / 100 : undefined
+      },
+      e(InnerBlocks.Content)
+    )
   });
 
   registerFormatType('slide/fragment', {
