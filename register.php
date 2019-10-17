@@ -60,6 +60,7 @@ foreach ( array(
     'background-opacity',
     'font-size',
     'font-family',
+    'font-family-url',
     'transition',
     'transition-speed',
     'controls',

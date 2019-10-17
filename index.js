@@ -10,7 +10,7 @@
   blockEditor,
   url,
   codeEditor
-}) => {
+}, FontPicker) => {
   const { __ } = i18n;
   const { registerBlockType, createBlock } = blocks;
   const { createElement: e, Fragment, useRef, useEffect, memo } = element;
@@ -18,7 +18,7 @@
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
-  const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink } = components;
+  const { TextareaControl, ColorPicker, PanelBody, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink } = components;
   const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls, RichTextToolbarButton } = blockEditor;
   const { addQueryArgs } = url;
   const colorKey = 'presentation-color';
@@ -31,6 +31,7 @@
   const cssKey = 'presentation-css';
   const fontSizeKey = 'presentation-font-size';
   const fontFamilyKey = 'presentation-font-family';
+  const fontFamilyUrlKey = 'presentation-font-url-family';
   const transitionKey = 'presentation-transition';
   const transitionSpeedKey = 'presentation-transition-speed';
   const controlsKey = 'presentation-controls';
@@ -109,6 +110,8 @@
         opacity: meta[backgroundOpacityKey] ? meta[backgroundOpacityKey] / 100 : 1
       };
 
+      console.log(meta[fontFamilyUrlKey]);
+
       return [
         ...Object.keys(rules).map((key) => {
           return e(
@@ -125,6 +128,11 @@
           );
         }),
         e('style', null, meta[cssKey]),
+        !!meta[fontFamilyUrlKey] && e(
+          'style',
+          null,
+          `@import url("${meta[fontFamilyUrlKey]}")`
+        ),
         e(
           PluginDocumentSettingPanel,
           {
@@ -140,9 +148,8 @@
             initialPosition: 42,
             onChange: (value) => updateMeta(value + '', fontSizeKey)
           }),
-          e(TextControl, {
+          e(FontPicker, {
             label: __('Font Family', 'slide'),
-            help: __('E.g. "Helvetica, sans-serif" or "Georgia, serif"', 'slide'),
             value: meta[fontFamilyKey],
             onChange: (value) => updateMeta(value, fontFamilyKey)
           }),
@@ -637,4 +644,117 @@
 
     window.requestAnimationFrame(resize);
   }
-})(window.wp);
+})(
+  window.wp,
+  (({
+    i18n: { __ },
+    element: { createElement: e },
+    components: { BaseControl },
+    compose: { withInstanceId },
+    data: { select, dispatch }
+  }) => {
+    const fontFamilyUrlKey = 'presentation-font-url-family';
+    const googleFonts = {
+      'Abril Fatface': { weight: ['400'] },
+      Anton: { weight: ['400'] },
+      Arvo: { weight: ['400', '700'] },
+      Asap: { weight: ['400', '500', '600', '700'] },
+      'Barlow Condensed': { weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] },
+      Barlow: { weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] },
+      'Cormorant Garamond': { weight: ['300', '400', '500', '600', '700'] },
+      Faustina: { weight: ['400', '500', '600', '700'] },
+      'Fira Sans': { weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] },
+      'IBM Plex Sans': { weight: ['100', '200', '300', '400', '500', '600', '700'] },
+      Inconsolata: { weight: ['400', '700'] },
+      Heebo: { weight: ['100', '300', '400', '500', '700', '800', '900'] },
+      Karla: { weight: ['400', '700'] },
+      Lato: { weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] },
+      Lora: { weight: ['400', '700'] },
+      Merriweather: { weight: ['300', '400', '500', '600', '700', '800', '900'] },
+      Montserrat: { weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] },
+      'Noto Sans': { weight: ['400', '700'] },
+      'Noto Serif': { weight: ['400', '700'] },
+      'Open Sans': { weight: ['300', '400', '500', '600', '700', '800'] },
+      Oswald: { weight: ['200', '300', '400', '500', '600', '700'] },
+      'Playfair Display': { weight: ['400', '700', '900'] },
+      'PT Serif': { weight: ['400', '700'] },
+      Roboto: { weight: ['100', '300', '400', '500', '700', '900'] },
+      Rubik: { weight: ['300', '400', '500', '700', '900'] },
+      Tajawal: { weight: ['200', '300', '400', '500', '700', '800', '900'] },
+      Ubuntu: { weight: ['300', '400', '500', '700'] },
+      Yrsa: { weight: ['300', '400', '500', '600', '700'] }
+    };
+
+    return withInstanceId(({ label, value, help, instanceId, onChange, className, ...props }) => {
+      const id = `inspector-coblocks-font-family-${instanceId}`;
+      const systemFonts = [
+        { value: '', label: __('Default') },
+        { value: 'Arial', label: 'Arial' },
+        { value: 'Helvetica', label: 'Helvetica' },
+        { value: 'Times New Roman', label: 'Times New Roman' },
+        { value: 'Georgia', label: 'Georgia' }
+      ];
+      const fonts = [];
+
+      // Add Google Fonts
+      Object.keys(googleFonts).map((k) => {
+        fonts.push(
+          { value: k, label: k }
+        );
+      });
+
+      systemFonts.reverse().map((font) => {
+        fonts.unshift(font);
+      });
+
+      const onChangeValue = ({ target: { value } }) => {
+        const googleFontsAttr = ':100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic';
+        const isSystemFont = systemFonts.filter(function (font) {
+          return font.label === value;
+        }).length > 0;
+
+        let url = '';
+
+        if (!isSystemFont) {
+          url = 'https://fonts.googleapis.com/css?family=' + value.replace(/ /g, '+') + googleFontsAttr;
+        }
+
+        onChange(value);
+        dispatch('core/editor').editPost({
+          meta: {
+            [fontFamilyUrlKey]: url
+          }
+        });
+      };
+
+      return (
+        e(
+          BaseControl,
+          {
+            label,
+            id,
+            help,
+            className
+          },
+          e(
+            'select',
+            {
+              id,
+              className: 'components-select-control__input components-select-control__input--coblocks-fontfamily',
+              onChange: onChangeValue,
+              'aria-describedby': help ? `${id}__help` : undefined,
+              ...props
+            },
+            fonts.map((option, index) =>
+              e('option', {
+                key: `${option.label}-${option.value}-${index}`,
+                value: option.value,
+                selected: value === option.value ? 'selected' : ''
+              }, option.label)
+            )
+          )
+        )
+      );
+    });
+  })(window.wp)
+);

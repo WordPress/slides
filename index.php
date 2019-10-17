@@ -58,6 +58,7 @@ add_action( 'enqueue_block_editor_assets', function() {
 			'wp-components',
 			'wp-block-editor',
 			'wp-url',
+			'wp-compose',
 		),
 		filemtime( dirname( __FILE__ ) . '/index.js' ),
 		true
@@ -130,6 +131,16 @@ add_action( 'wp_enqueue_scripts', function() {
 			plugins_url( 'reveal/pdf.min.css', __FILE__ ),
 			array(),
 			'3.8.0'
+		);
+	}
+
+	$font_url = get_post_meta( get_the_ID(), 'presentation-font-family-url', true );
+
+	if ( $font_url ) {
+		wp_enqueue_style(
+			'slide-default-font',
+			$font_url,
+			array()
 		);
 	}
 
