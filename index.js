@@ -381,6 +381,7 @@
 
   registerBlockType('slide/slide', {
     title: __('Slide', 'slide'),
+    description: __('With this blocks you can form your slide deck! You can override document level setting for each slide block.'),
     icon: 'slides',
     category: 'common',
     keywords: [__('Presentation', 'slide')],

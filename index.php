@@ -4,7 +4,7 @@
  * Plugin Name: Slide
  * Plugin URI:  https://wordpress.org/plugins/slide/
  * Description: Allows you to create presentations with the block editor.
- * Version:     0.0.6
+ * Version:     0.0.7
  * Author:      Ella van Durpe
  * Author URI:  https://ellavandurpe.com
  * Text Domain: slide
@@ -41,6 +41,8 @@ add_action( 'enqueue_block_editor_assets', function() {
 	if ( ! is_admin() || get_post_type() !== 'presentation' ) {
 		return;
 	}
+
+	wp_enqueue_code_editor( array( 'type' => 'text/css' ) );
 
 	wp_enqueue_script(
 		'slide',
