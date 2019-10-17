@@ -8,11 +8,12 @@
   data,
   components,
   blockEditor,
-  url
+  url,
+  codeEditor
 }) => {
   const { __ } = i18n;
   const { registerBlockType, createBlock } = blocks;
-  const { createElement: e, Fragment } = element;
+  const { createElement: e, Fragment, useRef, useEffect, memo } = element;
   const { registerFormatType, toggleFormat } = richText;
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
@@ -35,6 +36,36 @@
   const controlsKey = 'presentation-controls';
   const progressKey = 'presentation-progress';
   const cssPrefix = '.block-editor-block-list__layout .block-editor-block-list__block[data-type="slide/slide"]';
+
+  const CodeEditor = memo(({ onChange, ...props }) => {
+    const ref = useRef();
+
+    useEffect(() => {
+      const editor = codeEditor.initialize(ref.current, {
+        ...codeEditor.defaultSettings,
+        codemirror: {
+          ...codeEditor.defaultSettings.codemirror,
+          tabSize: 2,
+          mode: 'css',
+          lineNumbers: false
+        }
+      });
+
+      editor.codemirror.on('change', () => {
+        onChange(editor.codemirror.getValue());
+      });
+
+      return () => {
+        editor.codemirror.toTextArea();
+      };
+    });
+
+    return e('textarea', {
+      ref,
+      ...props
+    });
+  // Never rerender.
+  }, () => true);
 
   subscribe(() => {
     const blocks = select('core/block-editor').getBlocks();
@@ -266,10 +297,10 @@
             title: __('Custom CSS', 'slide'),
             icon: 'editor-code'
           },
-          e(TextareaControl, {
+          e(CodeEditor, {
             label: __('Custom CSS Rules', 'slide'),
             help: __('Please prefix all rules with "section.wp-block-slide-slide"!', 'slide'),
-            value: meta[cssKey] || 'section.wp-block-slide-slide {}',
+            value: meta[cssKey] || '/* Always a block prefix! */\n.wp-block-slide-slide {\n\t\n}\n',
             onChange: (value) => updateMeta(value, cssKey)
           })
         ),
