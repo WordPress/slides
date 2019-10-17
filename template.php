@@ -9,6 +9,12 @@
 			top: 3px;
 		}
 
+		@media print {
+			.print-pdf #wpadminbar {
+				display: none;
+			}
+		}
+
 		.wp-block-image, figure {
 			margin: 0;
 		}
@@ -50,7 +56,7 @@
 			background-image: none;
 		}
 
-		.reveal .backgrounds .present .slide-background-content {
+		.reveal .slide-background .slide-background-content {
 			background-image: url("<?php echo get_post_meta( get_the_ID(), 'presentation-background-url', true ) ?: 'none'; ?>");
 			background-position: <?php echo get_post_meta( get_the_ID(), 'presentation-background-position', true ) ?: '50% 50%'; ?>;
 			opacity: <?php echo (int) get_post_meta( get_the_ID(), 'presentation-background-opacity', true ) / 100 ?: '1'; ?>;

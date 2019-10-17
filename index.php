@@ -55,6 +55,7 @@ add_action( 'enqueue_block_editor_assets', function() {
 			'wp-data',
 			'wp-components',
 			'wp-block-editor',
+			'wp-url',
 		),
 		filemtime( dirname( __FILE__ ) . '/index.js' ),
 		true
@@ -115,6 +116,20 @@ add_action( 'wp_enqueue_scripts', function() {
 		array(),
 		'3.8.0'
 	);
+
+	if ( isset( $_GET[ 'print-pdf' ] ) ) {
+		wp_add_inline_script(
+			'slide-reveal',
+			'window.print()'
+		);
+
+		wp_enqueue_style(
+			'slide-reveal-pdf',
+			plugins_url( 'reveal/pdf.min.css', __FILE__ ),
+			array(),
+			'3.8.0'
+		);
+	}
 
 	wp_enqueue_style(
 		'slide-common',

@@ -7,7 +7,8 @@
   editPost,
   data,
   components,
-  blockEditor
+  blockEditor,
+  url
 }) => {
   const { __ } = i18n;
   const { registerBlockType, createBlock } = blocks;
@@ -16,8 +17,9 @@
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
-  const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl, ToggleControl, Button, FocalPointPicker } = components;
+  const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink } = components;
   const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls, RichTextToolbarButton } = blockEditor;
+  const { addQueryArgs } = url;
   const colorKey = 'presentation-color';
   const bgColorKey = 'presentation-background-color';
   const backgroundGradientKey = 'presentation-background-gradient';
@@ -53,6 +55,9 @@
     render: () => {
       const meta = useSelect((select) =>
         select('core/editor').getEditedPostAttribute('meta')
+      );
+      const link = useSelect((select) =>
+        select('core/editor').getCurrentPost('meta').link
       );
       const { editPost } = useDispatch('core/editor');
       const updateMeta = (value, key) => editPost({
@@ -316,6 +321,28 @@
             checked: meta[progressKey] === 'true',
             onChange: (value) => updateMeta(value + '', progressKey)
           })
+        ),
+        e(
+          PluginDocumentSettingPanel,
+          {
+            name: 'slide-pdf',
+            title: __('PDF (Experimental)', 'slide'),
+            icon: 'page'
+          },
+          e(
+            'p',
+            {},
+            e(
+              ExternalLink,
+              {
+                href: addQueryArgs(link, { 'print-pdf': true }),
+                target: '_blank'
+              },
+              __('Print (Save as PDF).', 'slides')
+            ),
+            e('br'),
+            __('Enable backgrounds and remove margins.', 'slides')
+          )
         )
       ];
     }
