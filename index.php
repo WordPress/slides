@@ -48,7 +48,6 @@ add_action( 'enqueue_block_editor_assets', function() {
 		array(
 			'wp-element',
 			'wp-i18n',
-			'wp-editor',
 			'wp-blocks',
 			'wp-rich-text',
 			'wp-plugins',

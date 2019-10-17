@@ -1,7 +1,6 @@
 (({
   i18n,
   blocks,
-  editor,
   element,
   richText,
   plugins,
@@ -12,14 +11,13 @@
 }) => {
   const { __ } = i18n;
   const { registerBlockType, createBlock } = blocks;
-  const { RichTextToolbarButton } = editor;
   const { createElement: e, Fragment } = element;
   const { registerFormatType, toggleFormat } = richText;
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
   const { TextareaControl, ColorPicker, PanelBody, RangeControl, TextControl, SelectControl, ToggleControl, Button, FocalPointPicker } = components;
-  const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls } = blockEditor;
+  const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls, RichTextToolbarButton } = blockEditor;
   const colorKey = 'presentation-color';
   const bgColorKey = 'presentation-background-color';
   const backgroundGradientKey = 'presentation-background-gradient';
@@ -100,9 +98,10 @@
           },
           e(RangeControl, {
             label: __('Font Size', 'slide'),
-            value: parseInt(meta[fontSizeKey], 10),
+            value: meta[fontSizeKey] ? parseInt(meta[fontSizeKey], 10) : undefined,
             min: 10,
             max: 100,
+            initialPosition: 42,
             onChange: (value) => updateMeta(value + '', fontSizeKey)
           }),
           e(TextControl, {
@@ -143,6 +142,22 @@
           e(__experimentalGradientPickerControl, {
             onChange: (value) => updateMeta(value, backgroundGradientKey),
             value: meta[backgroundGradientKey]
+          }),
+          !!meta[backgroundUrlKey] && e(RangeControl, {
+            label: __('Opacity', 'slide'),
+            help: __('May be overridden by the block!'),
+            value: meta[backgroundOpacityKey] ? 100 - parseInt(meta[backgroundOpacityKey], 10) : undefined,
+            min: 0,
+            max: 100,
+            initialPosition: 0,
+            onChange: (value) => {
+              editPost({
+                meta: {
+                  ...meta,
+                  [backgroundOpacityKey]: 100 - value + ''
+                }
+              });
+            }
           })
         ),
         e(
@@ -176,7 +191,7 @@
               });
             },
             allowedTypes: ALLOWED_MEDIA_TYPES,
-            value: parseInt(meta[backgroundIdKey], 10),
+            value: meta[backgroundIdKey] ? parseInt(meta[backgroundIdKey], 10) : undefined,
             render: ({ open }) => e(Button, {
               isDefault: true,
               onClick: open
@@ -224,9 +239,11 @@
           }),
           !!meta[backgroundUrlKey] && e(RangeControl, {
             label: __('Opacity', 'slide'),
-            value: parseInt(meta[backgroundOpacityKey], 10),
+            help: __('May be overridden by the block!'),
+            value: meta[backgroundOpacityKey] ? parseInt(meta[backgroundOpacityKey], 10) : undefined,
             min: 0,
             max: 100,
+            initialPosition: 100,
             onChange: (value) => {
               editPost({
                 meta: {
@@ -398,12 +415,21 @@
             (attributes.backgroundUrl || meta[backgroundUrlKey]) &&
             e(RangeControl, {
               label: __('Opacity', 'slide'),
-              value: 100 - parseInt(attributes.backgroundOpacity, 10),
+              value: attributes.backgroundOpacity ? 100 - parseInt(attributes.backgroundOpacity, 10) : undefined,
               min: 0,
               max: 100,
-              onChange: (value) => setAttributes({
-                backgroundOpacity: 100 - value + ''
-              })
+              initialPosition: 0,
+              onChange: (value) => {
+                if (value === undefined) {
+                  setAttributes({
+                    backgroundOpacity: undefined
+                  });
+                } else {
+                  setAttributes({
+                    backgroundOpacity: 100 - value + ''
+                  });
+                }
+              }
             }),
             !!attributes.backgroundColor && e(Button, {
               isDefault: true,
@@ -464,9 +490,10 @@
             }),
             !!attributes.backgroundUrl && e(RangeControl, {
               label: __('Opacity', 'slide'),
-              value: parseInt(attributes.backgroundOpacity, 10),
+              value: attributes.backgroundOpacity ? parseInt(attributes.backgroundOpacity, 10) : undefined,
               min: 0,
               max: 100,
+              initialPosition: 100,
               onChange: (value) => setAttributes({
                 backgroundOpacity: value + ''
               })
