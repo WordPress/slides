@@ -19,8 +19,9 @@ Report issues, or collaborate, on [Github](https://github.com/ellatrix/slides/is
 
 * Creates a custom post type "Presentation", which will render as a presentation on the front end using [Reveal.js](https://revealjs.com).
 * Enables the block editor with a "Slide" block, which can be used as a container for each slide in the presentation.
-* Currently the styling options are limited, but you can add your own CSS rules.
-* You import a font by adding e.g. `@import url('https://fonts.googleapis.com/css?family=...');` above any other rules.
-* You can also set a background color for individual slides!
+* You can add background colors, gradients, and images for the whole presentation, but also per slide.
+* You can select a font, color, and size.
+* If that's not enough, you can always add some custom CSS!
+* You can import a custom font by adding `@import url('https://fonts.googleapis.com/css?family=...');` above any other rules in the CSS input field.
 * It's possible to include some notes with every slide.
-* More options coming soon!
+* A lot more options coming soon!
