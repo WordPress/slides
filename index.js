@@ -593,10 +593,11 @@
     }
 
     const width = element.clientWidth;
-    const margin = width / 33;
-    const parentWidth = element.parentNode.clientWidth - margin * 2;
-    const scale = Math.min(1, parentWidth / width);
-    const marginLeft = scale === 1 ? ((parentWidth - width) / 2) + margin : margin;
+    const parentWidth = element.parentNode.clientWidth;
+    const margin = parentWidth / 26;
+    const innerParentWidth = element.parentNode.clientWidth - margin * 2;
+    const scale = Math.min(1, innerParentWidth / width);
+    const marginLeft = scale === 1 ? ((innerParentWidth - width) / 2) + margin : margin;
     const transform = `translate(${marginLeft}px, ${margin}px) scale(${scale})`;
 
     if (element.style.transform !== transform) {
