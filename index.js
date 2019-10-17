@@ -138,7 +138,7 @@
         !!meta[fontFamilyHeadingKey] && e(
           'style',
           null,
-          ( !! meta[fontFamilyHeadingUrlKey] ? `@import url("${meta[fontFamilyHeadingUrlKey]}");` : '' ) +
+          (meta[fontFamilyHeadingUrlKey] ? `@import url("${meta[fontFamilyHeadingUrlKey]}");` : '') +
           `${cssPrefix} section h1, ${cssPrefix} section h2, ${cssPrefix} section h3, ${cssPrefix} section h4, ${cssPrefix} section h5, ${cssPrefix} section h6 { font-family: ${meta[fontFamilyHeadingKey]} }`
         ),
         e(
@@ -163,7 +163,7 @@
               editPost({
                 meta: {
                   [fontFamilyKey]: value,
-                  [fontFamilyUrlKey]: fontUrl,
+                  [fontFamilyUrlKey]: fontUrl
                 }
               });
             }
@@ -189,11 +189,11 @@
               editPost({
                 meta: {
                   [fontFamilyHeadingKey]: value,
-                  [fontFamilyHeadingUrlKey]: fontUrl,
+                  [fontFamilyHeadingUrlKey]: fontUrl
                 }
               });
             }
-          }),
+          })
         ),
         e(
           PluginDocumentSettingPanel,
@@ -685,9 +685,8 @@
     i18n: { __ },
     element: { createElement: e },
     components: { BaseControl },
-    compose: { withInstanceId },
+    compose: { withInstanceId }
   }) => {
-    const fontFamilyUrlKey = 'presentation-font-url-family';
     const googleFonts = {
       'Abril Fatface': { weight: ['400'] },
       Anton: { weight: ['400'] },
