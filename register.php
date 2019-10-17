@@ -37,7 +37,15 @@ register_post_type( 'presentation', array(
     'has_archive' => true,
     'hierarchical' => false,
     'menu_position' => null,
-    'supports' => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields' ),
+    'supports' => array(
+        'title',
+        'editor',
+        'author',
+        'thumbnail',
+        'excerpt',
+        'custom-fields',
+        'revisions'
+    ),
     'show_in_rest' => true,
 ) );
 
