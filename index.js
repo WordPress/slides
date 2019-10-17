@@ -298,8 +298,6 @@
             icon: 'editor-code'
           },
           e(CodeEditor, {
-            label: __('Custom CSS Rules', 'slide'),
-            help: __('Please prefix all rules with "section.wp-block-slide-slide"!', 'slide'),
             value: meta[cssKey] || '/* Always a block prefix! */\n.wp-block-slide-slide {\n\t\n}\n',
             onChange: (value) => updateMeta(value, cssKey)
           })
