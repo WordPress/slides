@@ -22,6 +22,11 @@
   const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls } = blockEditor;
   const colorKey = 'presentation-color';
   const bgColorKey = 'presentation-background-color';
+  const backgroundGradientKey = 'presentation-background-gradient';
+  const backgroundUrlKey = 'presentation-background-url';
+  const backgroundIdKey = 'presentation-background-id';
+  const backgroundPositionKey = 'presentation-background-position';
+  const backgroundOpacityKey = 'presentation-background-opacity';
   const cssKey = 'presentation-css';
   const fontSizeKey = 'presentation-font-size';
   const fontFamilyKey = 'presentation-font-family';
@@ -55,18 +60,36 @@
       const updateMeta = (value, key) => editPost({
         meta: { ...meta, [key]: value }
       });
+      const rules = {
+        color: meta[colorKey] || '#000',
+        'background-color': meta[bgColorKey] || '#fff',
+        'background-image': meta[backgroundGradientKey] || 'none',
+        'font-size': (meta[fontSizeKey] || '42') + 'px',
+        'font-family': meta[fontFamilyKey] || 'Helvetica, sans-serif'
+      };
+
+      const backgroundRules = {
+        'background-image': meta[backgroundUrlKey] ? `url("${meta[backgroundUrlKey]}")` : 'none',
+        'background-size': 'cover',
+        'background-position': meta[backgroundPositionKey] ? meta[backgroundPositionKey] : '50% 50%',
+        opacity: meta[backgroundOpacityKey] ? meta[backgroundOpacityKey] / 100 : 1
+      };
 
       return [
-        e('style', null,
-`
-${cssPrefix} section {
-    color: ${meta[colorKey]};
-    background: ${meta[bgColorKey]};
-    font-size: ${meta[fontSizeKey] || '42'}px;
-    font-family: ${meta[fontFamilyKey] || 'Helvetica, sans-serif'};
-}
-`
-        ),
+        ...Object.keys(rules).map((key) => {
+          return e(
+            'style',
+            null,
+            `${cssPrefix} section {${key}:${rules[key]}}`
+          );
+        }),
+        ...Object.keys(backgroundRules).map((key) => {
+          return e(
+            'style',
+            null,
+            `${cssPrefix} section .wp-block-slide-slide__background {${key}:${backgroundRules[key]}}`
+          );
+        }),
         e('style', null, meta[cssKey]),
         e(
           PluginDocumentSettingPanel,
@@ -102,15 +125,116 @@ ${cssPrefix} section {
             title: __('Background', 'slide'),
             icon: 'art'
           },
-          e(__experimentalGradientPickerControl, {
-            onChange: (value) => updateMeta(value, bgColorKey),
-            value: meta[bgColorKey]
-          }),
           e(ColorPicker, {
             disableAlpha: true,
             label: __('Background Color', 'slide'),
             color: meta[bgColorKey],
-            onChangeComplete: (value) => updateMeta(value.hex, bgColorKey)
+            onChangeComplete: (value) => {
+              editPost({
+                meta: {
+                  ...meta,
+                  [bgColorKey]: value.hex,
+                  [backgroundGradientKey]: ''
+                }
+              });
+            }
+          }),
+          __('Experimental:'),
+          e(__experimentalGradientPickerControl, {
+            onChange: (value) => updateMeta(value, backgroundGradientKey),
+            value: meta[backgroundGradientKey]
+          })
+        ),
+        e(
+          PluginDocumentSettingPanel,
+          {
+            name: 'slide-background-image',
+            title: __('Background Image', 'slide'),
+            icon: 'format-image'
+          },
+          e(MediaUpload, {
+            onSelect: (media) => {
+              if (!media || !media.url) {
+                editPost({
+                  meta: {
+                    ...meta,
+                    [backgroundUrlKey]: undefined,
+                    [backgroundIdKey]: undefined,
+                    [backgroundPositionKey]: undefined,
+                    [backgroundOpacityKey]: undefined
+                  }
+                });
+                return;
+              }
+
+              editPost({
+                meta: {
+                  ...meta,
+                  [backgroundUrlKey]: media.url,
+                  [backgroundIdKey]: media.id + ''
+                }
+              });
+            },
+            allowedTypes: ALLOWED_MEDIA_TYPES,
+            value: parseInt(meta[backgroundIdKey], 10),
+            render: ({ open }) => e(Button, {
+              isDefault: true,
+              onClick: open
+            }, meta[backgroundUrlKey] ? __('Change') : __('Add Background Image'))
+          }),
+          ' ',
+          !!meta[backgroundUrlKey] && e(Button, {
+            isDefault: true,
+            onClick: () => {
+              editPost({
+                meta: {
+                  ...meta,
+                  [backgroundUrlKey]: undefined,
+                  [backgroundIdKey]: undefined,
+                  [backgroundPositionKey]: undefined,
+                  [backgroundOpacityKey]: undefined
+                }
+              });
+            }
+          }, __('Remove')),
+          e('br'), e('br'),
+          !!meta[backgroundUrlKey] && e(FocalPointPicker, {
+            label: __('Focal Point Picker'),
+            url: meta[backgroundUrlKey],
+            value: (() => {
+              if (!meta[backgroundPositionKey]) {
+                return;
+              }
+
+              let [x, y] = meta[backgroundPositionKey].split(' ');
+
+              x = parseFloat(x) / 100;
+              y = parseFloat(y) / 100;
+
+              return { x, y };
+            })(),
+            onChange: (focalPoint) => {
+              editPost({
+                meta: {
+                  ...meta,
+                  [backgroundPositionKey]: `${focalPoint.x * 100}% ${focalPoint.y * 100}%`
+                }
+              });
+            }
+          }),
+          !!meta[backgroundUrlKey] && e(RangeControl, {
+            label: __('Opacity', 'slide'),
+            value: parseInt(meta[backgroundOpacityKey], 10),
+            min: 0,
+            max: 100,
+            onChange: (value) => {
+              editPost({
+                meta: {
+                  ...meta,
+                  [backgroundOpacityKey]: value + ''
+                }
+              });
+            }
           })
         ),
         e(
@@ -210,8 +334,12 @@ ${cssPrefix} section {
         type: 'string'
       }
     },
-    edit: ({ attributes, setAttributes, className }) =>
-      e(
+    edit: ({ attributes, setAttributes, className }) => {
+      const meta = useSelect((select) =>
+        select('core/editor').getEditedPostAttribute('meta')
+      );
+
+      return e(
         Fragment,
         null,
         e(
@@ -243,7 +371,15 @@ ${cssPrefix} section {
               color: attributes.color,
               onChangeComplete: ({ hex: color }) =>
                 setAttributes({ color })
-            })
+            }),
+            !!attributes.color && e(Button, {
+              isDefault: true,
+              onClick: () => {
+                setAttributes({
+                  color: undefined
+                });
+              }
+            }, __('Remove'))
           ),
           e(
             PanelBody,
@@ -259,7 +395,8 @@ ${cssPrefix} section {
               onChangeComplete: ({ hex: backgroundColor }) =>
                 setAttributes({ backgroundColor })
             }),
-            !!attributes.backgroundUrl && e(RangeControl, {
+            (attributes.backgroundUrl || meta[backgroundUrlKey]) &&
+            e(RangeControl, {
               label: __('Opacity', 'slide'),
               value: 100 - parseInt(attributes.backgroundOpacity, 10),
               min: 0,
@@ -267,7 +404,15 @@ ${cssPrefix} section {
               onChange: (value) => setAttributes({
                 backgroundOpacity: 100 - value + ''
               })
-            })
+            }),
+            !!attributes.backgroundColor && e(Button, {
+              isDefault: true,
+              onClick: () => {
+                setAttributes({
+                  backgroundColor: undefined
+                });
+              }
+            }, __('Remove'))
           ),
           e(
             PanelBody,
@@ -282,8 +427,7 @@ ${cssPrefix} section {
                   setAttributes({
                     backgroundUrl: undefined,
                     backgroundId: undefined,
-                    backgroundPosition: undefined,
-                    backgroundOpacity: undefined
+                    focalPoint: undefined
                   });
                   return;
                 }
@@ -307,8 +451,7 @@ ${cssPrefix} section {
                 setAttributes({
                   backgroundUrl: undefined,
                   backgroundId: undefined,
-                  backgroundPosition: undefined,
-                  backgroundOpacity: undefined
+                  focalPoint: undefined
                 });
               }
             }, __('Remove')),
@@ -336,7 +479,9 @@ ${cssPrefix} section {
             className,
             style: {
               color: attributes.color || undefined,
-              backgroundColor: attributes.backgroundColor || undefined
+              backgroundColor: attributes.backgroundColor || undefined,
+              // If a background color is set, disable the global gradient.
+              backgroundImage: attributes.backgroundColor ? 'none' : undefined
             }
           },
           e(
@@ -345,15 +490,15 @@ ${cssPrefix} section {
               className: 'wp-block-slide-slide__background',
               style: {
                 backgroundImage: attributes.backgroundUrl ? `url("${attributes.backgroundUrl}")` : undefined,
-                backgroundSize: 'cover',
-                backgroundPosition: attributes.focalPoint ? `${attributes.focalPoint.x * 100}% ${attributes.focalPoint.y * 100}%` : '50% 50%',
+                backgroundPosition: attributes.focalPoint ? `${attributes.focalPoint.x * 100}% ${attributes.focalPoint.y * 100}%` : undefined,
                 opacity: attributes.backgroundOpacity ? attributes.backgroundOpacity / 100 : undefined
               }
             }
           ),
           e(InnerBlocks)
         )
-      ),
+      );
+    },
     save: ({ attributes }) => e(
       'section',
       {

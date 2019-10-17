@@ -28,15 +28,32 @@
 			max-width: none;
 		}
 
+		/* Remove margin for admin bar. */
 		html {
 			margin-top: 0 !important;
 		}
 
 		.reveal {
-			background: <?php echo get_post_meta( get_the_ID(), 'presentation-background-color', true ) ?: '#fff'; ?>;
 			color: <?php echo get_post_meta( get_the_ID(), 'presentation-color', true ) ?: '#000'; ?>;
 			font-size: <?php echo get_post_meta( get_the_ID(), 'presentation-font-size', true ) ?: '42'; ?>px;
 			font-family: <?php echo get_post_meta( get_the_ID(), 'presentation-font-family', true ) ?: 'Helvetica, sans-serif'; ?>;
+		}
+
+		/* Extra specificity to override reveal background. */
+		.reveal .slide-background {
+			background-color: <?php echo get_post_meta( get_the_ID(), 'presentation-background-color', true ) ?: '#fff'; ?>;
+			background-image: <?php echo get_post_meta( get_the_ID(), 'presentation-background-gradient', true ) ?: 'none'; ?>;
+		}
+
+		/* If a background color is set, disable the global gradient. */
+		.reveal .slide-background[style*="background-color"] {
+			background-image: none;
+		}
+
+		.reveal .backgrounds .present .slide-background-content {
+			background-image: url("<?php echo get_post_meta( get_the_ID(), 'presentation-background-url', true ) ?: 'none'; ?>");
+			background-position: <?php echo get_post_meta( get_the_ID(), 'presentation-background-position', true ) ?: '50% 50%'; ?>;
+			opacity: <?php echo (int) get_post_meta( get_the_ID(), 'presentation-background-opacity', true ) / 100 ?: '1'; ?>;
 		}
 
 		.reveal .slides {
