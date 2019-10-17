@@ -61,6 +61,8 @@ foreach ( array(
     'font-size',
     'font-family',
     'font-family-url',
+    'font-family-heading',
+    'font-family-heading-url',
     'transition',
     'transition-speed',
     'controls',

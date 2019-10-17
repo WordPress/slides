@@ -31,7 +31,9 @@
   const cssKey = 'presentation-css';
   const fontSizeKey = 'presentation-font-size';
   const fontFamilyKey = 'presentation-font-family';
-  const fontFamilyUrlKey = 'presentation-font-url-family';
+  const fontFamilyUrlKey = 'presentation-font-family-url';
+  const fontFamilyHeadingKey = 'presentation-font-family-heading';
+  const fontFamilyHeadingUrlKey = 'presentation-font-family-heading-url';
   const transitionKey = 'presentation-transition';
   const transitionSpeedKey = 'presentation-transition-speed';
   const controlsKey = 'presentation-controls';
@@ -133,11 +135,17 @@
           null,
           `@import url("${meta[fontFamilyUrlKey]}")`
         ),
+        !!meta[fontFamilyHeadingKey] && e(
+          'style',
+          null,
+          ( !! meta[fontFamilyHeadingUrlKey] ? `@import url("${meta[fontFamilyHeadingUrlKey]}");` : '' ) +
+          `${cssPrefix} section h1, ${cssPrefix} section h2, ${cssPrefix} section h3, ${cssPrefix} section h4, ${cssPrefix} section h5, ${cssPrefix} section h6 { font-family: ${meta[fontFamilyHeadingKey]} }`
+        ),
         e(
           PluginDocumentSettingPanel,
           {
             name: 'slide-font',
-            title: __('Font', 'slide'),
+            title: __('Base Font', 'slide'),
             icon: 'text'
           },
           e(RangeControl, {
@@ -151,7 +159,14 @@
           e(FontPicker, {
             label: __('Font Family', 'slide'),
             value: meta[fontFamilyKey],
-            onChange: (value) => updateMeta(value, fontFamilyKey)
+            onChange: (value, fontUrl) => {
+              editPost({
+                meta: {
+                  [fontFamilyKey]: value,
+                  [fontFamilyUrlKey]: fontUrl,
+                }
+              });
+            }
           }),
           e(ColorPicker, {
             disableAlpha: true,
@@ -159,6 +174,26 @@
             color: meta[colorKey],
             onChangeComplete: (value) => updateMeta(value.hex, colorKey)
           })
+        ),
+        e(
+          PluginDocumentSettingPanel,
+          {
+            name: 'slide-heading-font',
+            title: __('Heading Font', 'slide'),
+            icon: 'text'
+          },
+          e(FontPicker, {
+            label: __('Font Family', 'slide'),
+            value: meta[fontFamilyHeadingKey],
+            onChange: (value, fontUrl) => {
+              editPost({
+                meta: {
+                  [fontFamilyHeadingKey]: value,
+                  [fontFamilyHeadingUrlKey]: fontUrl,
+                }
+              });
+            }
+          }),
         ),
         e(
           PluginDocumentSettingPanel,
@@ -651,7 +686,6 @@
     element: { createElement: e },
     components: { BaseControl },
     compose: { withInstanceId },
-    data: { select, dispatch }
   }) => {
     const fontFamilyUrlKey = 'presentation-font-url-family';
     const googleFonts = {
@@ -719,12 +753,7 @@
           url = 'https://fonts.googleapis.com/css?family=' + value.replace(/ /g, '+') + googleFontsAttr;
         }
 
-        onChange(value);
-        dispatch('core/editor').editPost({
-          meta: {
-            [fontFamilyUrlKey]: url
-          }
-        });
+        onChange(value, url);
       };
 
       return (
@@ -739,7 +768,6 @@
           e(
             'select',
             {
-              id,
               className: 'components-select-control__input components-select-control__input--coblocks-fontfamily',
               onChange: onChangeValue,
               'aria-describedby': help ? `${id}__help` : undefined,

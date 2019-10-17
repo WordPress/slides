@@ -144,6 +144,16 @@ add_action( 'wp_enqueue_scripts', function() {
 		);
 	}
 
+	$heading_font_url = get_post_meta( get_the_ID(), 'presentation-font-family-heading-url', true );
+
+	if ( $heading_font_url ) {
+		wp_enqueue_style(
+			'slide-heading-font',
+			$heading_font_url,
+			array()
+		);
+	}
+
 	wp_enqueue_style(
 		'slide-common',
 		plugins_url( 'common.css', __FILE__ ),
