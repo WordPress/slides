@@ -144,7 +144,7 @@
             }
           }),
           __('Experimental:'),
-          e(__experimentalGradientPickerControl, {
+          __experimentalGradientPickerControl && e(__experimentalGradientPickerControl, {
             onChange: (value) => updateMeta(value, backgroundGradientKey),
             value: meta[backgroundGradientKey]
           }),
