@@ -205,5 +205,5 @@ add_filter( 'default_content', function( $post_content, $post ) {
 		return;
 	}
 
-	return "<!-- wp:slide/slide -->\n<section class=\"wp-block-slide-slide\"></section>\n<!-- /wp:slide/slide -->";
+	return file_get_contents( __DIR__ . '/default-content.html' );
 }, 10, 2 );

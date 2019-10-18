@@ -79,7 +79,9 @@
     }
 
     const slide = createBlock('slide/slide', {}, [
-      createBlock(block.name, block.attributes)
+      block.name === 'core/paragraph'
+        ? createBlock('core/heading')
+        : createBlock(block.name, block.attributes)
     ]);
 
     dispatch('core/block-editor').replaceBlock(block.clientId, slide);
