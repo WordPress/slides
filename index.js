@@ -469,14 +469,15 @@
           e(
             PanelBody,
             {
-              title: __('Slide Notes', 'slide'),
+              title: __('Speaker Notes', 'slide'),
               icon: 'edit',
               initialOpen: false
             },
             e(TextareaControl, {
               label: __('Anything you want to remember.', 'slide'),
               value: attributes.notes,
-              onChange: (notes) => setAttributes({ notes })
+              onChange: (notes) => setAttributes({ notes }),
+              rows: 10
             })
           ),
           e(
