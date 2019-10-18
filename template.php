@@ -114,7 +114,8 @@
 			preloadIframes: true,
 			hideAddressBar: true,
 			height: 720,
-			width: <?php echo get_post_meta( get_the_ID(), 'presentation-width', true ) ?: '960'; ?>
+			width: <?php echo get_post_meta( get_the_ID(), 'presentation-width', true ) ?: '960'; ?>,
+			margin: 0.1,
 		} );
 		window.addEventListener( 'DOMContentLoaded', function() {
 			document.querySelector('#wp-admin-bar-slides-fullscreen a').addEventListener( 'click', function( event ) {

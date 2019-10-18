@@ -166,7 +166,7 @@
             onChange: (value) => {
               editPost({
                 meta: {
-                  [widthKey]: value === '16:9' ? '1280' : undefined
+                  [widthKey]: value === '16:9' ? '1280' : ''
                 }
               });
             }
