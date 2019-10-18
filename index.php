@@ -172,21 +172,20 @@ add_action( 'wp_enqueue_scripts', function() {
 	}
 }, 99999 );
 
-add_action( 'load-post.php', function() {
-	if ( get_current_screen()->post_type !== 'presentation' ) {
-		return;
-	}
+foreach ( array(
+	'load-post.php',
+	'load-post-new.php',
+) as $tag ) {
+    add_action( $tag, function() {
+		if ( get_current_screen()->post_type !== 'presentation' ) {
+			return;
+		}
 
-	remove_editor_styles();
-}, 99999 );
-
-add_action( 'load-post-new.php', function() {
-	if ( get_current_screen()->post_type !== 'presentation' ) {
-		return;
-	}
-
-	remove_editor_styles();
-}, 99999 );
+		remove_editor_styles();
+		remove_theme_support( 'editor-color-palette' );
+		remove_theme_support( 'editor-font-sizes' );
+	}, 99999 );
+}
 
 add_action( 'admin_bar_menu', function ( $wp_admin_bar ) {
 	if ( ! is_singular( 'presentation' ) ) {
