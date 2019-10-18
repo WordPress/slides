@@ -68,6 +68,8 @@ foreach ( array(
     'controls',
     'progress',
     'width',
+    'horizontal-padding',
+    'vertical-padding',
 ) as $key ) {
     register_post_meta( 'presentation', "presentation-$key", array(
         'show_in_rest' => true,

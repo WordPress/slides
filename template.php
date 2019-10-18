@@ -71,6 +71,13 @@
 			opacity: <?php echo (int) get_post_meta( get_the_ID(), 'presentation-background-opacity', true ) / 100 ?: '1'; ?>;
 		}
 
+		section.wp-block-slide-slide {
+			padding-top: <?php echo get_post_meta( get_the_ID(), 'presentation-vertical-padding', true ) ?: '0.2em'; ?> !important;
+			padding-bottom: <?php echo get_post_meta( get_the_ID(), 'presentation-vertical-padding', true ) ?: '0.2em'; ?> !important;
+			padding-left: <?php echo get_post_meta( get_the_ID(), 'presentation-horizontal-padding', true ) ?: '0.2em'; ?> !important;
+			padding-right: <?php echo get_post_meta( get_the_ID(), 'presentation-horizontal-padding', true ) ?: '0.2em'; ?> !important;
+		}
+
 		.reveal .slides {
 			text-align: inherit;
 		}
@@ -115,7 +122,7 @@
 			hideAddressBar: true,
 			height: 720,
 			width: <?php echo get_post_meta( get_the_ID(), 'presentation-width', true ) ?: '960'; ?>,
-			margin: 0.1,
+			margin: 0.08,
 		} );
 		window.addEventListener( 'DOMContentLoaded', function() {
 			document.querySelector('#wp-admin-bar-slides-fullscreen a').addEventListener( 'click', function( event ) {

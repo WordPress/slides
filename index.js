@@ -39,7 +39,8 @@
   const controlsKey = 'presentation-controls';
   const progressKey = 'presentation-progress';
   const widthKey = 'presentation-width';
-  const cssPrefix = '.block-editor-block-list__layout .block-editor-block-list__block[data-type="slide/slide"]';
+  const horizontalPaddingKey = 'presentation-horizontal-padding';
+  const verticalPaddingKey = 'presentation-vertical-padding';
 
   const CodeEditor = memo(({ onChange, ...props }) => {
     const ref = useRef();
@@ -100,13 +101,21 @@
       const updateMeta = (value, key) => editPost({
         meta: { ...meta, [key]: value }
       });
-      const rules = {
-        color: meta[colorKey] || '#000',
+
+      const bodyRules = {
         'background-color': meta[bgColorKey] || '#fff',
         'background-image': meta[backgroundGradientKey] || 'none',
+        color: meta[colorKey] || '#000',
         'font-size': (meta[fontSizeKey] || '42') + 'px',
-        'font-family': meta[fontFamilyKey] || 'Helvetica, sans-serif',
-        width: meta[widthKey] ? parseInt(meta[widthKey], 10) + 100 + 'px !important' : undefined
+        'font-family': meta[fontFamilyKey] || 'Helvetica, sans-serif'
+      };
+
+      const rules = {
+        width: meta[widthKey] ? meta[widthKey] + 'px !important' : undefined,
+        'padding-top': meta[verticalPaddingKey] ? meta[verticalPaddingKey] : '0.2em',
+        'padding-bottom': meta[verticalPaddingKey] ? meta[verticalPaddingKey] : '0.2em',
+        'padding-left': meta[horizontalPaddingKey] ? meta[horizontalPaddingKey] : '0.2em',
+        'padding-right': meta[horizontalPaddingKey] ? meta[horizontalPaddingKey] : '0.2em'
       };
 
       const backgroundRules = {
@@ -116,21 +125,26 @@
         opacity: meta[backgroundOpacityKey] ? meta[backgroundOpacityKey] / 100 : 1
       };
 
-      console.log(meta[fontFamilyUrlKey]);
-
       return [
+        ...Object.keys(bodyRules).map((key) => {
+          return e(
+            'style',
+            null,
+            `.wp-block-slide-slide__body {${key}:${bodyRules[key]}}`
+          );
+        }),
         ...Object.keys(rules).map((key) => {
           return e(
             'style',
             null,
-            `${cssPrefix} section {${key}:${rules[key]}}`
+            `.wp-block-slide-slide {${key}:${rules[key]}}`
           );
         }),
         ...Object.keys(backgroundRules).map((key) => {
           return e(
             'style',
             null,
-            `${cssPrefix} section .wp-block-slide-slide__background {${key}:${backgroundRules[key]}}`
+            `.wp-block-slide-slide__background {${key}:${backgroundRules[key]}}`
           );
         }),
         e('style', null, meta[cssKey]),
@@ -143,7 +157,7 @@
           'style',
           null,
           (meta[fontFamilyHeadingUrlKey] ? `@import url("${meta[fontFamilyHeadingUrlKey]}");` : '') +
-          `${cssPrefix} section h1, ${cssPrefix} section h2, ${cssPrefix} section h3, ${cssPrefix} section h4, ${cssPrefix} section h5, ${cssPrefix} section h6 { font-family: ${meta[fontFamilyHeadingKey]} }`
+          `.wp-block-slide-slide h1, .wp-block-slide-slide h2, .wp-block-slide-slide h3, .wp-block-slide-slide h4, .wp-block-slide-slide h5, .wp-block-slide-slide h6 { font-family: ${meta[fontFamilyHeadingKey]} }`
         ),
         !!meta[widthKey] && e(
           'style',
@@ -170,6 +184,18 @@
                 }
               });
             }
+          }),
+          e(TextControl, {
+            label: __('Horizontal Padding'),
+            placeholder: '0.2em',
+            value: meta[horizontalPaddingKey],
+            onChange: (value) => updateMeta(value, horizontalPaddingKey)
+          }),
+          e(TextControl, {
+            label: __('Vertical Padding'),
+            placeholder: '0.2em',
+            value: meta[verticalPaddingKey],
+            onChange: (value) => updateMeta(value, verticalPaddingKey)
           })
         ),
         e(
@@ -680,9 +706,9 @@
           'This slide is hidden'
         ),
         e(
-          'section',
+          'div',
           {
-            className: className + (attributes.hidden ? ' slide-hidden' : ''),
+            className: 'wp-block-slide-slide__body',
             style: {
               color: attributes.color || undefined,
               backgroundColor: attributes.backgroundColor || undefined,
@@ -704,7 +730,11 @@
               src: attributes.backgroundIframeUrl
             })
           ),
-          e(InnerBlocks)
+          e(
+            'section',
+            { className },
+            e(InnerBlocks)
+          )
         )
       );
     },

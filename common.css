@@ -1,35 +1,39 @@
-section.wp-block-slide-slide {
-    padding: 0.2em !important;
+.wp-block-slide-slide {
+	box-sizing: border-box;
     line-height: 1.3;
 }
 
-section.wp-block-slide-slide h1,
-section.wp-block-slide-slide h2,
-section.wp-block-slide-slide h3,
-section.wp-block-slide-slide h4,
-section.wp-block-slide-slide h5,
-section.wp-block-slide-slide h6 {
+.wp-block-slide-slide * {
+	box-sizing: inherit;
+}
+
+.wp-block-slide-slide h1,
+.wp-block-slide-slide h2,
+.wp-block-slide-slide h3,
+.wp-block-slide-slide h4,
+.wp-block-slide-slide h5,
+.wp-block-slide-slide h6 {
 	line-height: 1.2;
 	word-wrap: break-word;
 	font-style: normal;
 }
 
-section.wp-block-slide-slide h1 {
+.wp-block-slide-slide h1 {
 	font-size: 2.5em;
 }
 
-section.wp-block-slide-slide h2 {
+.wp-block-slide-slide h2 {
 	font-size: 1.6em;
 }
 
-section.wp-block-slide-slide h3 {
+.wp-block-slide-slide h3 {
 	font-size: 1.3em;
 }
 
-section.wp-block-slide-slide h4 {
+.wp-block-slide-slide h4 {
 	font-size: 1em;
 }
 
-section.wp-block-slide-slide p {
+.wp-block-slide-slide p {
 	margin: 20px 0;
 }

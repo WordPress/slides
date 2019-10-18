@@ -72,16 +72,22 @@ div.is-selected[data-type="slide/slide"]:before {
 	line-height: inherit;
 }
 
-section.wp-block-slide-slide {
+.wp-block-slide-slide__body {
 	position: relative;
+	padding: 50px;
+	overflow: hidden;
 	outline: 1px dashed currentColor;
-	width: 1060px !important;
-	height: 820px !important;
-	padding: calc( 50px + 0.2em ) !important;
+}
+
+.wp-block-slide-slide {
+	position: relative;
+	width: 960px !important;
+	height: 720px !important;
+	padding: 0.2em;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	overflow: hidden;
+	outline: 1px dashed currentColor;
 }
 
 .wp-block-slide-slide__background {
