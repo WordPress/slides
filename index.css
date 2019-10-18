@@ -59,6 +59,10 @@ div[data-type="slide/slide"]:before {
 	font-size: 24px;
 }
 
+div.is-selected[data-type="slide/slide"]:before {
+	content: '';
+}
+
 .block-editor-default-block-appender textarea.block-editor-default-block-appender__content {
 	font-size: inherit;
 	height: auto !important;
