@@ -59,6 +59,7 @@ div[data-type="slide/slide"] {
 }
 
 section.wp-block-slide-slide {
+	position: relative;
 	outline: 1px dashed currentColor;
 	width: 1060px !important;
 	height: 700px !important;
@@ -66,6 +67,7 @@ section.wp-block-slide-slide {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	overflow: hidden;
 }
 
 .wp-block-slide-slide__background {
@@ -78,4 +80,8 @@ section.wp-block-slide-slide {
 
 .wp-block-slide-slide .fragment {
 	opacity: 0.5;
+}
+
+div[data-type="slide/slide"] div[data-block] > .components-notice {
+	margin: 0;
 }

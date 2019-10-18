@@ -18,7 +18,7 @@
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
-  const { TextareaControl, ColorPicker, PanelBody, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink } = components;
+  const { TextareaControl, ColorPicker, PanelBody, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink, Notice } = components;
   const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls, RichTextToolbarButton } = blockEditor;
   const { addQueryArgs } = url;
   const colorKey = 'presentation-color';
@@ -448,6 +448,9 @@
       },
       backgroundOpacity: {
         type: 'string'
+      },
+      hidden: {
+        type: 'boolean'
       }
     },
     edit: ({ attributes, setAttributes, className }) => {
@@ -597,12 +600,30 @@
                 backgroundOpacity: value + ''
               })
             })
+          ),
+          e(
+            PanelBody,
+            {
+              title: __('Visibility', 'slide'),
+              icon: 'visibility',
+              initialOpen: false
+            },
+            e(ToggleControl, {
+              label: __('Hide Slide', 'slide'),
+              checked: attributes.hidden,
+              onChange: (hidden) => setAttributes({ hidden })
+            })
           )
+        ),
+        attributes.hidden && e(
+          Notice,
+          { status: 'warning', isDismissible: false },
+          'This slide is hidden'
         ),
         e(
           'section',
           {
-            className,
+            className: className + (attributes.hidden ? ' slide-hidden' : ''),
             style: {
               color: attributes.color || undefined,
               backgroundColor: attributes.backgroundColor || undefined,
@@ -626,10 +647,11 @@
       );
     },
     save: ({ attributes }) => e(
-      'section',
+      attributes.hidden ? 'div' : 'section',
       {
         style: {
-          color: attributes.color || undefined
+          color: attributes.color || undefined,
+          display: attributes.hidden ? 'none' : undefined
         },
         'data-background-color': attributes.backgroundColor || undefined,
         'data-background-image': attributes.backgroundUrl ? attributes.backgroundUrl : undefined,
