@@ -97,6 +97,11 @@ section.wp-block-slide-slide {
 	height: 100%;
 	max-height: 100%;
 	max-width: 100%;
+	pointer-events: none;
+}
+
+.is-selected .wp-block-slide-slide__background iframe {
+	pointer-events: all;
 }
 
 .wp-block-slide-slide .fragment {
