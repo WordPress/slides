@@ -15,10 +15,6 @@
 			}
 		}
 
-		.wp-block-image, figure {
-			margin: 0;
-		}
-
 		figure.alignleft {
 			float: left;
 			margin-right: 1em;
@@ -94,9 +90,13 @@
 			max-height: 100%;
 		}
 
-		.wp-block-slide-slide section figure img {
-			margin: 0;
-			display: block;
+		.wp-block-media-text {
+			display: flex;
+		}
+
+		.wp-block-media-text__media,
+		.wp-block-media-text__content {
+			flex-basis: 50%;
 		}
 	</style>
 	<style>

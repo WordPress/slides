@@ -37,8 +37,8 @@ add_action( 'admin_notices', function() {
 	}
 } );
 
-add_action( 'enqueue_block_editor_assets', function() {
-	if ( ! is_admin() || get_post_type() !== 'presentation' ) {
+add_action( 'admin_enqueue_scripts', function() {
+	if ( get_post_type() !== 'presentation' ) {
 		return;
 	}
 
@@ -71,13 +71,24 @@ add_action( 'enqueue_block_editor_assets', function() {
 		filemtime( dirname( __FILE__ ) . '/index.css' )
 	);
 
-	wp_enqueue_style(
-		'slide-common',
+	wp_deregister_style( 'wp-block-library-theme' );
+	wp_register_style(
+		'wp-block-library-theme',
 		plugins_url( 'common.css', __FILE__ ),
 		array(),
 		filemtime( dirname( __FILE__ ) . '/common.css' )
 	);
-} );
+}, 99999 );
+
+add_action( 'wp_enqueue_scripts', function() {
+	wp_deregister_style( 'wp-block-library-theme' );
+	wp_register_style(
+		'wp-block-library-theme',
+		plugins_url( 'common.css', __FILE__ ),
+		array(),
+		filemtime( dirname( __FILE__ ) . '/common.css' )
+	);
+}, 99999 );
 
 add_action( 'init', function() {
     require 'register.php';
