@@ -675,7 +675,7 @@
               src: attributes.backgroundIframeUrl
             })
           ),
-          e(InnerBlocks, { renderAppender: false })
+          e(InnerBlocks)
         )
       );
     },
