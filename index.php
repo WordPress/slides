@@ -65,17 +65,17 @@ add_action( 'enqueue_block_editor_assets', function() {
 	);
 
 	wp_enqueue_style(
-		'slide-common',
-		plugins_url( 'common.css', __FILE__ ),
-		array(),
-		filemtime( dirname( __FILE__ ) . '/common.css' )
-	);
-
-	wp_enqueue_style(
 		'slide',
 		plugins_url( 'index.css', __FILE__ ),
 		array(),
 		filemtime( dirname( __FILE__ ) . '/index.css' )
+	);
+
+	wp_enqueue_style(
+		'slide-common',
+		plugins_url( 'common.css', __FILE__ ),
+		array(),
+		filemtime( dirname( __FILE__ ) . '/common.css' )
 	);
 } );
 
@@ -186,6 +186,11 @@ foreach ( array(
 		remove_theme_support( 'editor-font-sizes' );
 	}, 99999 );
 }
+
+add_filter( 'block_editor_settings', function( $settings ) {
+	$settings['styles'] = array();
+	return $settings;
+}, 99999 );
 
 add_action( 'admin_bar_menu', function ( $wp_admin_bar ) {
 	if ( ! is_singular( 'presentation' ) ) {

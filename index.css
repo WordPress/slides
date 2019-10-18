@@ -131,3 +131,45 @@ div[data-type="slide/slide"] div[data-block] > .components-notice {
 	margin-top: 0;
 	margin-bottom: 0;
 }
+
+.wp-block-slide-slide h1,
+.wp-block-slide-slide h2,
+.wp-block-slide-slide h3,
+.wp-block-slide-slide h4,
+.wp-block-slide-slide h5,
+.wp-block-slide-slide h6 {
+	color: inherit;
+}
+
+.wp-block-slide-slide p {
+	font-size: inherit;
+	line-height: inherit;
+}
+
+.editor-styles-wrapper div[data-type="core/list"] ol,
+.editor-styles-wrapper div[data-type="core/list"] ul {
+	padding-left: 1em;
+    margin-left: inherit;
+}
+
+.wp-block-slide-slide ul,
+.wp-block-slide-slide ol {
+	padding-left: 1em;
+}
+
+.wp-block-slide-slide li {
+	margin-bottom: initial;
+}
+
+.wp-block-slide-slide ul {
+	list-style-type: disc;
+}
+
+.wp-block-slide-slide ol {
+	list-style-type: decimal;
+}
+
+.wp-block-slide-slide ul ul,
+.wp-block-slide-slide ol ul {
+	list-style-type: circle;
+}
