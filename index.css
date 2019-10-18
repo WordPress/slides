@@ -49,6 +49,16 @@ div[data-type="slide/slide"] {
 	max-width: none !important;
 }
 
+body {
+	counter-reset: slidecounter;
+}
+
+div[data-type="slide/slide"]:before {
+	content: counter( slidecounter );
+	counter-increment: slidecounter;
+	font-size: 24px;
+}
+
 .block-editor-default-block-appender textarea.block-editor-default-block-appender__content {
 	font-size: inherit;
 	height: auto !important;
