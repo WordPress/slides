@@ -88,6 +88,13 @@ section.wp-block-slide-slide {
 	right: 0;
 }
 
+.wp-block-slide-slide__background iframe {
+	width: 100%;
+	height: 100%;
+	max-height: 100%;
+	max-width: 100%;
+}
+
 .wp-block-slide-slide .fragment {
 	opacity: 0.5;
 }

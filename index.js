@@ -18,7 +18,7 @@
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
-  const { TextareaControl, ColorPicker, PanelBody, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink, Notice } = components;
+  const { TextareaControl, ColorPicker, PanelBody, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink, Notice, TextControl } = components;
   const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls, RichTextToolbarButton } = blockEditor;
   const { addQueryArgs } = url;
   const colorKey = 'presentation-color';
@@ -453,6 +453,9 @@
       },
       hidden: {
         type: 'boolean'
+      },
+      backgroundIframeUrl: {
+        type: 'string'
       }
     },
     edit: ({ attributes, setAttributes, className }) => {
@@ -607,6 +610,30 @@
           e(
             PanelBody,
             {
+              title: __('Background Iframe', 'slide'),
+              icon: 'format-image',
+              initialOpen: false
+            },
+            e(TextControl, {
+              label: __('Iframe URL'),
+              value: attributes.backgroundIframeUrl,
+              onChange: (backgroundIframeUrl) => setAttributes({ backgroundIframeUrl })
+            }),
+            e('br'), e('br'),
+            !!attributes.backgroundIframeUrl && e(RangeControl, {
+              label: __('Opacity', 'slide'),
+              value: attributes.backgroundOpacity ? parseInt(attributes.backgroundOpacity, 10) : undefined,
+              min: 0,
+              max: 100,
+              initialPosition: 100,
+              onChange: (value) => setAttributes({
+                backgroundOpacity: value + ''
+              })
+            })
+          ),
+          e(
+            PanelBody,
+            {
               title: __('Visibility', 'slide'),
               icon: 'visibility',
               initialOpen: false
@@ -643,7 +670,10 @@
                 backgroundPosition: attributes.focalPoint ? `${attributes.focalPoint.x * 100}% ${attributes.focalPoint.y * 100}%` : undefined,
                 opacity: attributes.backgroundOpacity ? attributes.backgroundOpacity / 100 : undefined
               }
-            }
+            },
+            !!attributes.backgroundIframeUrl && e('iframe', {
+              src: attributes.backgroundIframeUrl
+            })
           ),
           e(InnerBlocks, { renderAppender: false })
         )
@@ -659,7 +689,8 @@
         'data-background-color': attributes.backgroundColor || undefined,
         'data-background-image': attributes.backgroundUrl ? attributes.backgroundUrl : undefined,
         'data-background-position': attributes.focalPoint ? `${attributes.focalPoint.x * 100}% ${attributes.focalPoint.y * 100}%` : undefined,
-        'data-background-opacity': attributes.backgroundOpacity ? attributes.backgroundOpacity / 100 : undefined
+        'data-background-opacity': attributes.backgroundOpacity ? attributes.backgroundOpacity / 100 : undefined,
+        'data-background-iframe': attributes.backgroundIframeUrl ? attributes.backgroundIframeUrl : undefined
       },
       e(InnerBlocks.Content)
     )
