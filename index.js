@@ -18,7 +18,7 @@
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
-  const { TextareaControl, ColorPicker, PanelBody, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink, Notice, TextControl } = components;
+  const { TextareaControl, ColorPicker, PanelBody, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink, Notice, TextControl, RadioControl } = components;
   const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls, RichTextToolbarButton } = blockEditor;
   const { addQueryArgs } = url;
   const colorKey = 'presentation-color';
@@ -38,6 +38,7 @@
   const transitionSpeedKey = 'presentation-transition-speed';
   const controlsKey = 'presentation-controls';
   const progressKey = 'presentation-progress';
+  const widthKey = 'presentation-width';
   const cssPrefix = '.block-editor-block-list__layout .block-editor-block-list__block[data-type="slide/slide"]';
 
   const CodeEditor = memo(({ onChange, ...props }) => {
@@ -104,7 +105,8 @@
         'background-color': meta[bgColorKey] || '#fff',
         'background-image': meta[backgroundGradientKey] || 'none',
         'font-size': (meta[fontSizeKey] || '42') + 'px',
-        'font-family': meta[fontFamilyKey] || 'Helvetica, sans-serif'
+        'font-family': meta[fontFamilyKey] || 'Helvetica, sans-serif',
+        width: meta[widthKey] ? parseInt(meta[widthKey], 10) + 100 + 'px !important' : undefined
       };
 
       const backgroundRules = {
@@ -142,6 +144,33 @@
           null,
           (meta[fontFamilyHeadingUrlKey] ? `@import url("${meta[fontFamilyHeadingUrlKey]}");` : '') +
           `${cssPrefix} section h1, ${cssPrefix} section h2, ${cssPrefix} section h3, ${cssPrefix} section h4, ${cssPrefix} section h5, ${cssPrefix} section h6 { font-family: ${meta[fontFamilyHeadingKey]} }`
+        ),
+        !!meta[widthKey] && e(
+          'style',
+          null,
+          `.editor-styles-wrapper .editor-writing-flow { width: ${parseInt(meta[widthKey], 10) + 130}px !important; }`
+        ),
+        e(
+          PluginDocumentSettingPanel,
+          {
+            name: 'slide-dimensions',
+            title: __('Setup', 'slide'),
+            icon: 'editor-expand'
+          },
+          e(RadioControl, {
+            selected: meta[widthKey] === '1280' ? '16:9' : '',
+            options: [
+              { label: __('Standard 4:3'), value: '' },
+              { label: __('Widescreen 16:9'), value: '16:9' }
+            ],
+            onChange: (value) => {
+              editPost({
+                meta: {
+                  [widthKey]: value === '16:9' ? '1280' : undefined
+                }
+              });
+            }
+          })
         ),
         e(
           PluginDocumentSettingPanel,
