@@ -642,7 +642,7 @@
               }
             }
           ),
-          e(InnerBlocks)
+          e(InnerBlocks, { renderAppender: false })
         )
       );
     },
