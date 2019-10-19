@@ -98,6 +98,14 @@
 		.wp-block-media-text__content {
 			flex-basis: 50%;
 		}
+
+		.alignfull {
+			width: 100vw;
+			left: 50%;
+			position: relative;
+			transform: translate(-50%, 0);
+			max-width: none;
+		}
 	</style>
 	<style>
 		<?php echo get_post_meta( get_the_ID(), 'presentation-css', true ); ?>
@@ -123,6 +131,19 @@
 			height: 720,
 			width: <?php echo get_post_meta( get_the_ID(), 'presentation-width', true ) ?: '960'; ?>,
 			margin: 0.08,
+			// minScale: 1,
+			// maxScale: 1,
+		} );
+		Reveal.addEventListener( 'ready', function( event ) {
+			document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
+				element.style.transform = `translate(-50%, 0) scale(${ 1 / Reveal.getScale() })`;
+			} );
+		} );
+		Reveal.addEventListener( 'resize', function( event ) {
+			console.log( event.scale );
+			document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
+				element.style.transform = `translate(-50%, 0) scale(${ 1 / event.scale })`;
+			} );
 		} );
 		window.addEventListener( 'DOMContentLoaded', function() {
 			document.querySelector('#wp-admin-bar-slides-fullscreen a').addEventListener( 'click', function( event ) {

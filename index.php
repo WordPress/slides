@@ -195,6 +195,7 @@ foreach ( array(
 		remove_editor_styles();
 		remove_theme_support( 'editor-color-palette' );
 		remove_theme_support( 'editor-font-sizes' );
+		add_theme_support( 'align-wide' );
 	}, 99999 );
 }
 
