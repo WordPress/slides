@@ -91,6 +91,7 @@
 		}
 
 		.wp-block-media-text {
+			/* Maybe table? */
 			display: flex;
 		}
 
@@ -105,6 +106,7 @@
 			position: relative;
 			transform: translate(-50%, 0);
 			max-width: none;
+			max-height: 100vh;
 		}
 	</style>
 	<style>
@@ -134,13 +136,24 @@
 			// minScale: 1,
 			// maxScale: 1,
 		} );
-		Reveal.addEventListener( 'ready', function( event ) {
-			document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
-				element.style.transform = `translate(-50%, 0) scale(${ 1 / Reveal.getScale() })`;
-			} );
+		document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
+			element.style.transform = `translate(-50%, 0) scale(${ 1 / Reveal.getScale() })`;
+		} );
+		document.querySelectorAll( '.wp-block-media-text' ).forEach( ( element ) => {
+			const percentage = parseInt( element.style.gridTemplateColumns, 10 );
+
+			element.classList.remove( 'is-image-fill' )
+
+			if ( percentage === 50 ) {
+				return;
+			}
+
+			element.querySelector( '.wp-block-media-text__media' )
+				.style.flexBasis = `${ percentage }%`;
+			element.querySelector( '.wp-block-media-text__content' )
+				.style.flexBasis = `${ 100 - percentage }%`;
 		} );
 		Reveal.addEventListener( 'resize', function( event ) {
-			console.log( event.scale );
 			document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
 				element.style.transform = `translate(-50%, 0) scale(${ 1 / event.scale })`;
 			} );
