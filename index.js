@@ -34,6 +34,7 @@
   const fontFamilyUrlKey = 'presentation-font-family-url';
   const fontFamilyHeadingKey = 'presentation-font-family-heading';
   const fontFamilyHeadingUrlKey = 'presentation-font-family-heading-url';
+  const fontWeightHeadingKey = 'presentation-font-weight-heading';
   const transitionKey = 'presentation-transition';
   const transitionSpeedKey = 'presentation-transition-speed';
   const controlsKey = 'presentation-controls';
@@ -159,6 +160,11 @@
           (meta[fontFamilyHeadingUrlKey] ? `@import url("${meta[fontFamilyHeadingUrlKey]}");` : '') +
           `.wp-block-slide-slide h1, .wp-block-slide-slide h2, .wp-block-slide-slide h3, .wp-block-slide-slide h4, .wp-block-slide-slide h5, .wp-block-slide-slide h6 { font-family: ${meta[fontFamilyHeadingKey]} }`
         ),
+        !!meta[fontWeightHeadingKey] && e(
+          'style',
+          null,
+          `.wp-block-slide-slide h1, .wp-block-slide-slide h2, .wp-block-slide-slide h3, .wp-block-slide-slide h4, .wp-block-slide-slide h5, .wp-block-slide-slide h6 { font-weight: ${meta[fontWeightHeadingKey]} }`
+        ),
         !!meta[widthKey] && e(
           'style',
           null,
@@ -250,6 +256,23 @@
                 }
               });
             }
+          }),
+          e(SelectControl, {
+            label: __('Font Weight', 'slide'),
+            help: __('Depending on the Font, some options may not be available.'),
+            options: [
+              { value: '100', label: __('Thin', 'slide') },
+              { value: '200', label: __('Extra Light', 'slide') },
+              { value: '300', label: __('Light', 'slide') },
+              { value: '400', label: __('Normal', 'slide') },
+              { value: '500', label: __('Medium', 'slide') },
+              { value: '600', label: __('Semi Bold', 'slide') },
+              { value: '700', label: __('Bold', 'slide') },
+              { value: '800', label: __('Extra Bold', 'slide') },
+              { value: '900', label: __('Black', 'slide') }
+            ],
+            value: meta[fontWeightHeadingKey] || 400,
+            onChange: (value) => updateMeta(value, fontWeightHeadingKey)
           })
         ),
         e(
@@ -830,7 +853,10 @@
       Rubik: { weight: ['300', '400', '500', '700', '900'] },
       Tajawal: { weight: ['200', '300', '400', '500', '700', '800', '900'] },
       Ubuntu: { weight: ['300', '400', '500', '700'] },
-      Yrsa: { weight: ['300', '400', '500', '600', '700'] }
+      Yrsa: { weight: ['300', '400', '500', '600', '700'] },
+      'Source Serif Pro': { weight: ['200', '300', '400', '600', '700', '900'] },
+      'Source Sans Pro': { weight: ['200', '300', '400', '600', '700', '900'] },
+      Martel: { weight: ['200', '300', '400', '600', '700', '800', '900'] }
     };
 
     return withInstanceId(({ label, value, help, instanceId, onChange, className, ...props }) => {
@@ -844,15 +870,19 @@
       ];
       const fonts = [];
 
+      systemFonts.map((font) => {
+        fonts.push(font);
+      });
+
+      function sortThings (a, b) {
+        return a > b ? 1 : b > a ? -1 : 0;
+      }
+
       // Add Google Fonts
-      Object.keys(googleFonts).map((k) => {
+      Object.keys(googleFonts).sort(sortThings).map((k) => {
         fonts.push(
           { value: k, label: k }
         );
-      });
-
-      systemFonts.reverse().map((font) => {
-        fonts.unshift(font);
       });
 
       const onChangeValue = ({ target: { value } }) => {
@@ -887,12 +917,23 @@
               'aria-describedby': help ? `${id}__help` : undefined,
               ...props
             },
-            fonts.map((option, index) =>
-              e('option', {
-                key: `${option.label}-${option.value}-${index}`,
-                value: option.value,
-                selected: value === option.value ? 'selected' : ''
-              }, option.label)
+            e('optgroup', { label: 'System Fonts' },
+              systemFonts.map((option, index) =>
+                e('option', {
+                  key: option.value,
+                  value: option.value,
+                  selected: value === option.value
+                }, option.label)
+              )
+            ),
+            e('optgroup', { label: 'Google Fonts' },
+              fonts.map((option, index) =>
+                e('option', {
+                  key: option.value,
+                  value: option.value,
+                  selected: value === option.value
+                }, option.label)
+              )
             )
           )
         )

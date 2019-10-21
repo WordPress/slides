@@ -47,7 +47,8 @@
 		.reveal h4,
 		.reveal h5,
 		.reveal h6 {
-			font-family: <?php echo get_post_meta( get_the_ID(), 'presentation-font-family-heading', true ) ?: 'Helvetica, sans-serif'; ?>;
+			font-family: <?php echo get_post_meta( get_the_ID(), 'presentation-font-family-heading', true ) ?: 'inherit'; ?>;
+			font-weight: <?php echo get_post_meta( get_the_ID(), 'presentation-font-weight-heading', true ) ?: 'inherit'; ?>;
 		}
 
 		/* Extra specificity to override reveal background. */
