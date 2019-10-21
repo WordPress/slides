@@ -271,7 +271,7 @@
               { value: '800', label: __('Extra Bold', 'slide') },
               { value: '900', label: __('Black', 'slide') }
             ],
-            value: meta[fontWeightHeadingKey] || 400,
+            value: meta[fontWeightHeadingKey] || '400',
             onChange: (value) => updateMeta(value, fontWeightHeadingKey)
           })
         ),
