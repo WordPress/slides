@@ -70,9 +70,6 @@
 
 		section.wp-block-slide-slide {
 			top: auto !important;
-			display: flex !important;
-			justify-content: center;
-			flex-direction: column;
 			padding-top: <?php echo get_post_meta( get_the_ID(), 'presentation-vertical-padding', true ) ?: '0.2em'; ?> !important;
 			padding-bottom: <?php echo get_post_meta( get_the_ID(), 'presentation-vertical-padding', true ) ?: '0.2em'; ?> !important;
 			padding-left: <?php echo get_post_meta( get_the_ID(), 'presentation-horizontal-padding', true ) ?: '0.2em'; ?> !important;

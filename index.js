@@ -689,7 +689,7 @@
             PanelBody,
             {
               title: __('Background Iframe', 'slide'),
-              icon: 'format-image',
+              icon: 'format-video',
               initialOpen: false
             },
             e(TextControl, {
