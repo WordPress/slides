@@ -68,6 +68,10 @@
 		}
 
 		section.wp-block-slide-slide {
+			top: auto !important;
+			display: flex !important;
+			justify-content: center;
+			flex-direction: column;
 			padding-top: <?php echo get_post_meta( get_the_ID(), 'presentation-vertical-padding', true ) ?: '0.2em'; ?> !important;
 			padding-bottom: <?php echo get_post_meta( get_the_ID(), 'presentation-vertical-padding', true ) ?: '0.2em'; ?> !important;
 			padding-left: <?php echo get_post_meta( get_the_ID(), 'presentation-horizontal-padding', true ) ?: '0.2em'; ?> !important;
@@ -76,6 +80,9 @@
 
 		.reveal .slides {
 			text-align: inherit;
+			justify-content: center;
+			display: flex;
+			flex-direction: column;
 		}
 
 		.reveal .controls,
@@ -108,6 +115,11 @@
 			max-width: none;
 			max-height: 100vh;
 		}
+
+		.reveal .slides > section,
+		.reveal .slides > section > section {
+			padding: <?php echo get_post_meta( get_the_ID(), 'presentation-vertical-padding', true ) ?: '0.2em'; ?> 0;
+		}
 	</style>
 	<style>
 		<?php echo get_post_meta( get_the_ID(), 'presentation-css', true ); ?>
@@ -137,12 +149,11 @@
 			// maxScale: 1,
 		} );
 		document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
-			element.style.transform = `translate(-50%, 0) scale(${ 1 / Reveal.getScale() })`;
+			element.style.width = 100 / Reveal.getScale() + 'vw';
+			element.style.maxHeight = 84 / Reveal.getScale() + 'vh';
 		} );
 		document.querySelectorAll( '.wp-block-media-text' ).forEach( ( element ) => {
 			const percentage = parseInt( element.style.gridTemplateColumns, 10 );
-
-			element.classList.remove( 'is-image-fill' )
 
 			if ( percentage === 50 ) {
 				return;
@@ -155,7 +166,8 @@
 		} );
 		Reveal.addEventListener( 'resize', function( event ) {
 			document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
-				element.style.transform = `translate(-50%, 0) scale(${ 1 / event.scale })`;
+				element.style.width = 100 / event.scale + 'vw';
+				element.style.maxHeight = 84 / event.scale + 'vh';
 			} );
 		} );
 		window.addEventListener( 'DOMContentLoaded', function() {
