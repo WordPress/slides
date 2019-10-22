@@ -4,15 +4,14 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<?php wp_head(); ?>
 	<style>
-		#wpadminbar #wp-admin-bar-slides-fullscreen > .ab-item:before {
-			content: '\f211';
-			top: 3px;
-		}
-
 		@media print {
 			.print-pdf #wpadminbar {
 				display: none;
 			}
+		}
+
+		.receiver #wpadminbar {
+			display: none;
 		}
 
 		figure.alignleft {
@@ -129,8 +128,13 @@
 			<?php the_content(); ?>
 		</div>
 	</div>
+	<script>var notesFilePath = '<?php echo plugins_url( 'reveal/notes.html', __FILE__ ); ?>';</script>
 	<?php wp_footer(); ?>
 	<script>
+		if ( /[?&]receiver/i.test( window.location.search ) ) {
+			document.body.classList.add( 'receiver' );
+		}
+
 		Reveal.initialize( {
 			transition: '<?php echo get_post_meta( get_the_ID(), 'presentation-transition', true ) ?: 'none'; ?>',
 			transitionSpeed: '<?php echo get_post_meta( get_the_ID(), 'presentation-transition-speed', true ) ?: 'default'; ?>',
@@ -168,12 +172,37 @@
 				element.style.maxHeight = 84 / event.scale + 'vh';
 			} );
 		} );
-		window.addEventListener( 'DOMContentLoaded', function() {
-			document.querySelector('#wp-admin-bar-slides-fullscreen a').addEventListener( 'click', function( event ) {
+		( () => {
+			const bar = document.querySelector('ul#wp-admin-bar-root-default');
+
+			if ( ! bar ) {
+				return;
+			}
+
+			const fullscreenLi = document.createElement( 'li' );
+			const speakerLi = document.createElement( 'li' );
+			const fullscreenButton = document.createElement( 'button' );
+			const speakerButton = document.createElement( 'button' );
+			const fullscreenText = document.createTextNode( '⤡ Fullscreen' );
+			const speakerText = document.createTextNode( '📣 Speaker View' );
+
+			fullscreenButton.appendChild( fullscreenText );
+			fullscreenLi.appendChild( fullscreenButton );
+			bar.appendChild( fullscreenLi );
+
+			speakerButton.appendChild( speakerText );
+			speakerLi.appendChild( speakerButton );
+			bar.appendChild( speakerLi );
+
+			fullscreenButton.addEventListener( 'click', function( event ) {
 				document.querySelector('.reveal').requestFullscreen();
 				event.preventDefault();
 			} );
-		} );
+			speakerButton.addEventListener( 'click', function( event ) {
+				Reveal.getPlugin( 'notes' ).open( notesFilePath );
+				event.preventDefault();
+			} );
+		} )();
 	</script>
 </body>
 </html>

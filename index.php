@@ -124,6 +124,14 @@ add_action( 'wp_enqueue_scripts', function() {
 		true
 	);
 
+	wp_enqueue_script(
+		'slide-reveal-notes',
+		plugins_url( 'reveal/notes.min.js', __FILE__ ),
+		array( 'slide-reveal' ),
+		'3.8.0',
+		true
+	);
+
 	wp_enqueue_style(
 		'slide-reveal',
 		plugins_url( 'reveal/reveal.min.css', __FILE__ ),
@@ -204,22 +212,29 @@ add_filter( 'block_editor_settings', function( $settings ) {
 	return $settings;
 }, 99999 );
 
-add_action( 'admin_bar_menu', function ( $wp_admin_bar ) {
-	if ( ! is_singular( 'presentation' ) ) {
-		return;
-	}
-
-	$wp_admin_bar->add_node( array(
-		'id'    => 'slides-fullscreen',
-		'title' => 'Fullscreen',
-		'href'  => '#',
-	) );
-}, 99999 );
-
 add_filter( 'default_content', function( $post_content, $post ) {
 	if ( $post->post_type !== 'presentation' ) {
 		return;
 	}
 
 	return file_get_contents( __DIR__ . '/default-content.html' );
+}, 10, 2 );
+
+add_filter( 'render_block', function( $block_content, $block ) {
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+
+	if ( $block[ 'blockName' ] !== 'slide/slide' ) {
+		return $block_content;
+	}
+
+	if ( empty( $block[ 'attrs' ][ 'notes' ] ) ) {
+		return $block_content;
+	}
+
+	$pos = strrpos( $block_content, '</section>', -1 );
+	$notes = '<aside class="notes">' . $block[ 'attrs' ][ 'notes' ] . '</aside>';
+
+	return substr_replace( $block_content, $notes, $pos, 0 );
 }, 10, 2 );

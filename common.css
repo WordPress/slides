@@ -159,3 +159,11 @@
 .has-huge-font-size {
 	font-size: 2em !important;
 }
+
+#wpadminbar li > button {
+	border-radius: 2px;
+	line-height: 24px;
+	border: none;
+	padding: 0 5px;
+	margin: 0 2px;
+}
