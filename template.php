@@ -4,6 +4,19 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<?php wp_head(); ?>
 	<style>
+		ul#wp-admin-bar-root-default li.slide-button {
+			margin: 0 5px;
+		}
+
+		ul#wp-admin-bar-root-default li.slide-button > button {
+			border-radius: 3px;
+			line-height: 24px;
+			border: none;
+			padding: 0 5px;
+			background: #fff;
+			font-weight: bold;
+		}
+
 		@media print {
 			.print-pdf #wpadminbar {
 				display: none;
@@ -183,15 +196,17 @@
 			const speakerLi = document.createElement( 'li' );
 			const fullscreenButton = document.createElement( 'button' );
 			const speakerButton = document.createElement( 'button' );
-			const fullscreenText = document.createTextNode( '⤡ Fullscreen' );
-			const speakerText = document.createTextNode( '📣 Speaker View' );
+			const fullscreenText = document.createTextNode( 'Fullscreen' );
+			const speakerText = document.createTextNode( 'Speaker View' );
 
 			fullscreenButton.appendChild( fullscreenText );
 			fullscreenLi.appendChild( fullscreenButton );
+			fullscreenLi.classList.add( 'slide-button' );
 			bar.appendChild( fullscreenLi );
 
 			speakerButton.appendChild( speakerText );
 			speakerLi.appendChild( speakerButton );
+			speakerLi.classList.add( 'slide-button' );
 			bar.appendChild( speakerLi );
 
 			fullscreenButton.addEventListener( 'click', ( event ) => {
