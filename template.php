@@ -128,7 +128,7 @@
 			<?php the_content(); ?>
 		</div>
 	</div>
-	<script>var notesFilePath = '<?php echo plugins_url( 'reveal/notes.html', __FILE__ ); ?>';</script>
+	<script>var notesFilePath = '<?php echo plugins_url( 'speaker.html', __FILE__ ); ?>';</script>
 	<?php wp_footer(); ?>
 	<script>
 		if ( /[?&]receiver/i.test( window.location.search ) ) {
@@ -194,11 +194,18 @@
 			speakerLi.appendChild( speakerButton );
 			bar.appendChild( speakerLi );
 
-			fullscreenButton.addEventListener( 'click', function( event ) {
-				document.querySelector('.reveal').requestFullscreen();
+			fullscreenButton.addEventListener( 'click', ( event ) => {
+				const target = document.querySelector('.reveal');
+
+				if ( target.requestFullscreen ) {
+					target.requestFullscreen();
+				} else if ( target.webkitRequestFullscreen ) {
+					target.webkitRequestFullscreen();
+				}
+
 				event.preventDefault();
 			} );
-			speakerButton.addEventListener( 'click', function( event ) {
+			speakerButton.addEventListener( 'click', ( event ) => {
 				Reveal.getPlugin( 'notes' ).open( notesFilePath );
 				event.preventDefault();
 			} );
