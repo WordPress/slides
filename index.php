@@ -225,11 +225,7 @@ foreach ( array(
 		$palette = array_map( 'trim', $palette );
 		$palette = array_map( 'sanitize_hex_color', $palette );
 		$palette = array_map( function( $hex ) {
-			return array(
-				'name' => $hex,
-				'slug' => sanitize_title( $hex ),
-				'color' => $hex,
-			);
+			return array( 'color' => $hex );
 		}, $palette );
 
 		if ( count( $palette ) ) {
