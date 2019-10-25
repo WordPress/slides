@@ -233,11 +233,10 @@
               });
             }
           }),
-          e(ColorPicker, {
-            disableAlpha: true,
+          e(ColorPalette, {
             label: __('Color', 'slide'),
-            color: meta[colorKey],
-            onChangeComplete: (value) => updateMeta(value.hex, colorKey)
+            value: meta[colorKey],
+            onChange: (value) => updateMeta(value, colorKey)
           })
         ),
         e(
@@ -284,15 +283,14 @@
             title: __('Background', 'slide'),
             icon: 'art'
           },
-          e(ColorPicker, {
-            disableAlpha: true,
+          e(ColorPalette, {
             label: __('Background Color', 'slide'),
-            color: meta[bgColorKey],
-            onChangeComplete: (value) => {
+            value: meta[bgColorKey],
+            onChange: (value) => {
               editPost({
                 meta: {
                   ...meta,
-                  [bgColorKey]: value.hex,
+                  [bgColorKey]: value,
                   [backgroundGradientKey]: ''
                 }
               });

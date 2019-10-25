@@ -216,7 +216,13 @@ foreach ( array(
 		}
 
 		$palette = get_post_meta( $post->ID, 'presentation-color-palette', true );
+
+		if ( ! $palette ) {
+			return;
+		}
+
 		$palette = explode( ',', $palette );
+		$palette = array_map( 'trim', $palette );
 		$palette = array_map( 'sanitize_hex_color', $palette );
 		$palette = array_map( function( $hex ) {
 			return array(
