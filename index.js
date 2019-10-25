@@ -362,10 +362,10 @@
               editPost({
                 meta: {
                   ...meta,
-                  [backgroundUrlKey]: undefined,
-                  [backgroundIdKey]: undefined,
-                  [backgroundPositionKey]: undefined,
-                  [backgroundOpacityKey]: undefined
+                  [backgroundUrlKey]: '',
+                  [backgroundIdKey]: '',
+                  [backgroundPositionKey]: '',
+                  [backgroundOpacityKey]: ''
                 }
               });
             }
