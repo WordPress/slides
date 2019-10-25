@@ -159,3 +159,15 @@
 .has-huge-font-size {
 	font-size: 2em !important;
 }
+
+.alignfull img,
+.alignfull video,
+.alignwide img,
+.alignwide video {
+	width: 100%;
+	display: block;
+}
+
+.wp-block-slide-slide *:last-child {
+	margin-bottom: 0 !important;
+}

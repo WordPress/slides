@@ -18,7 +18,7 @@
   const { registerPlugin } = plugins;
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
-  const { TextareaControl, ColorPicker, PanelBody, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink, Notice, TextControl, RadioControl } = components;
+  const { TextareaControl, PanelBody, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink, Notice, TextControl, RadioControl } = components;
   const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls, RichTextToolbarButton, ColorPalette } = blockEditor;
   const { addQueryArgs } = url;
   const colorKey = 'presentation-color';
@@ -555,6 +555,9 @@
       backgroundOpacity: {
         type: 'string'
       },
+      backgroundSize: {
+        type: 'string'
+      },
       hidden: {
         type: 'boolean'
       },
@@ -663,6 +666,7 @@
                   setAttributes({
                     backgroundUrl: undefined,
                     backgroundId: undefined,
+                    backgroundSize: undefined,
                     focalPoint: undefined
                   });
                   return;
@@ -687,6 +691,7 @@
                 setAttributes({
                   backgroundUrl: undefined,
                   backgroundId: undefined,
+                  backgroundSize: undefined,
                   focalPoint: undefined
                 });
               }
@@ -706,6 +711,17 @@
               initialPosition: 100,
               onChange: (value) => setAttributes({
                 backgroundOpacity: value + ''
+              })
+            }),
+            !!attributes.backgroundUrl && e(RadioControl, {
+              label: __('Size', 'slide'),
+              selected: attributes.backgroundSize,
+              options: [
+                { label: __('Cover'), value: 'cover' },
+                { label: __('Contain'), value: 'contain' }
+              ],
+              onChange: (backgroundSize) => setAttributes({
+                backgroundSize
               })
             })
           ),
@@ -770,6 +786,7 @@
               style: {
                 backgroundImage: attributes.backgroundUrl ? `url("${attributes.backgroundUrl}")` : undefined,
                 backgroundPosition: attributes.focalPoint ? `${attributes.focalPoint.x * 100}% ${attributes.focalPoint.y * 100}%` : undefined,
+                backgroundSize: attributes.backgroundSize ? attributes.backgroundSize : undefined,
                 opacity: attributes.backgroundOpacity ? attributes.backgroundOpacity / 100 : undefined
               }
             },
@@ -796,7 +813,8 @@
         'data-background-image': attributes.backgroundUrl ? attributes.backgroundUrl : undefined,
         'data-background-position': attributes.focalPoint ? `${attributes.focalPoint.x * 100}% ${attributes.focalPoint.y * 100}%` : undefined,
         'data-background-opacity': attributes.backgroundOpacity ? attributes.backgroundOpacity / 100 : undefined,
-        'data-background-iframe': attributes.backgroundIframeUrl ? attributes.backgroundIframeUrl : undefined
+        'data-background-iframe': attributes.backgroundIframeUrl ? attributes.backgroundIframeUrl : undefined,
+        'data-background-size': attributes.backgroundSize ? attributes.backgroundSize : undefined
       },
       e(InnerBlocks.Content)
     )

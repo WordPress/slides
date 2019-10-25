@@ -47,6 +47,12 @@
 	max-width: none;
 }
 
+.wp-block[data-align="wide"] video,
+.wp-block[data-align="full"] video {
+	width: 100%;
+	display: block;
+}
+
 div[data-type="slide/slide"] {
 	margin-bottom: 60px !important;
 	width: 100% !important;
@@ -104,6 +110,7 @@ div.is-selected[data-type="slide/slide"]:before {
 	bottom: 0;
 	left: 0;
 	right: 0;
+	background-repeat: no-repeat;
 }
 
 .wp-block-slide-slide__background iframe {

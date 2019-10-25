@@ -183,7 +183,7 @@
 		Reveal.addEventListener( 'resize', function( event ) {
 			document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
 				element.style.width = 100 / event.scale + 'vw';
-				element.style.maxHeight = 84 / event.scale + 'vh';
+				element.style.maxHeight = 100 / event.scale + 'vh';
 			} );
 		} );
 		( () => {
