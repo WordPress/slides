@@ -65,6 +65,7 @@ foreach ( array(
     'font-family-heading-url',
     'font-weight-heading',
     'transition',
+    'background-transition',
     'transition-speed',
     'controls',
     'progress',

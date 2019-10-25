@@ -36,6 +36,7 @@
   const fontFamilyHeadingUrlKey = 'presentation-font-family-heading-url';
   const fontWeightHeadingKey = 'presentation-font-weight-heading';
   const transitionKey = 'presentation-transition';
+  const backgroundTransitionKey = 'presentation-background-transition';
   const transitionSpeedKey = 'presentation-transition-speed';
   const controlsKey = 'presentation-controls';
   const progressKey = 'presentation-progress';
@@ -443,6 +444,19 @@
             ],
             value: meta[transitionKey],
             onChange: (value) => updateMeta(value, transitionKey)
+          }),
+          e(SelectControl, {
+            label: __('Background Transition Style', 'slide'),
+            options: [
+              { value: 'none', label: __('None', 'slide') },
+              { value: 'fade', label: __('Fade', 'slide') },
+              { value: 'slide', label: __('Slide', 'slide') },
+              { value: 'convex', label: __('Convex', 'slide') },
+              { value: 'concave', label: __('Concave', 'slide') },
+              { value: 'zoom', label: __('Zoom', 'slide') }
+            ],
+            value: meta[backgroundTransitionKey],
+            onChange: (value) => updateMeta(value, backgroundTransitionKey)
           }),
           e(SelectControl, {
             label: __('Transition Speed', 'slide'),

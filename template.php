@@ -150,6 +150,7 @@
 
 		Reveal.initialize( {
 			transition: '<?php echo get_post_meta( get_the_ID(), 'presentation-transition', true ) ?: 'none'; ?>',
+			backgroundTransition: '<?php echo get_post_meta( get_the_ID(), 'presentation-background-transition', true ) ?: 'none'; ?>',
 			transitionSpeed: '<?php echo get_post_meta( get_the_ID(), 'presentation-transition-speed', true ) ?: 'default'; ?>',
 			controls: <?php echo get_post_meta( get_the_ID(), 'presentation-controls', true ) ?: 'false'; ?>,
 			progress: <?php echo get_post_meta( get_the_ID(), 'presentation-progress', true ) ?: 'false'; ?>,
