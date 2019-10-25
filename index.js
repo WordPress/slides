@@ -19,7 +19,7 @@
   const { PluginDocumentSettingPanel } = editPost;
   const { useSelect, useDispatch, subscribe, select, dispatch } = data;
   const { TextareaControl, ColorPicker, PanelBody, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink, Notice, TextControl, RadioControl } = components;
-  const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls, RichTextToolbarButton } = blockEditor;
+  const { MediaUpload, __experimentalGradientPickerControl, InnerBlocks, InspectorControls, RichTextToolbarButton, ColorPalette } = blockEditor;
   const { addQueryArgs } = url;
   const colorKey = 'presentation-color';
   const bgColorKey = 'presentation-background-color';
@@ -43,6 +43,7 @@
   const widthKey = 'presentation-width';
   const horizontalPaddingKey = 'presentation-horizontal-padding';
   const verticalPaddingKey = 'presentation-vertical-padding';
+  const colorPaletteKey = 'presentation-color-palette';
 
   const CodeEditor = memo(({ onChange, ...props }) => {
     const ref = useRef();
@@ -416,6 +417,19 @@
         e(
           PluginDocumentSettingPanel,
           {
+            name: 'slide-palette',
+            title: __('Color Palette', 'slide'),
+            icon: 'art'
+          },
+          e(TextareaControl, {
+            label: __('Comma separated list of color values. Please refresh the page to be able to use the palette.', 'slide'),
+            value: meta[colorPaletteKey],
+            onChange: (value) => updateMeta(value, colorPaletteKey)
+          })
+        ),
+        e(
+          PluginDocumentSettingPanel,
+          {
             name: 'slide-css',
             title: __('Custom CSS', 'slide'),
             icon: 'editor-code'
@@ -582,11 +596,10 @@
               icon: 'text',
               initialOpen: false
             },
-            e(ColorPicker, {
-              disableAlpha: true,
+            e(ColorPalette, {
               label: __('Color', 'slide'),
-              color: attributes.color,
-              onChangeComplete: ({ hex: color }) =>
+              value: attributes.color,
+              onChange: (color) =>
                 setAttributes({ color })
             }),
             !!attributes.color && e(Button, {
@@ -605,11 +618,10 @@
               icon: 'art',
               initialOpen: false
             },
-            e(ColorPicker, {
-              disableAlpha: true,
+            e(ColorPalette, {
               label: __('Background Color', 'slide'),
-              color: attributes.backgroundColor,
-              onChangeComplete: ({ hex: backgroundColor }) =>
+              value: attributes.backgroundColor,
+              onChange: (backgroundColor) =>
                 setAttributes({ backgroundColor })
             }),
             (attributes.backgroundUrl || meta[backgroundUrlKey]) &&

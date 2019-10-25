@@ -204,6 +204,31 @@ foreach ( array(
 		remove_theme_support( 'editor-color-palette' );
 		remove_theme_support( 'editor-font-sizes' );
 		add_theme_support( 'align-wide' );
+
+		if ( ! isset( $_GET['post'] ) ) {
+			return;
+		}
+
+		$post = get_post( $_GET['post'] );
+
+		if ( ! $post ) {
+			return;
+		}
+
+		$palette = get_post_meta( $post->ID, 'presentation-color-palette', true );
+		$palette = explode( ',', $palette );
+		$palette = array_map( 'sanitize_hex_color', $palette );
+		$palette = array_map( function( $hex ) {
+			return array(
+				'name' => $hex,
+				'slug' => sanitize_title( $hex ),
+				'color' => $hex,
+			);
+		}, $palette );
+
+		if ( count( $palette ) ) {
+			add_theme_support( 'editor-color-palette', $palette );
+		}
 	}, 99999 );
 }
 
