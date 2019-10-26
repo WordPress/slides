@@ -59,6 +59,7 @@ add_action( 'admin_enqueue_scripts', function() {
 			'wp-block-editor',
 			'wp-url',
 			'wp-compose',
+			'wp-hooks'
 		),
 		filemtime( dirname( __FILE__ ) . '/index.js' ),
 		true
