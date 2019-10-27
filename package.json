@@ -1,9 +1,17 @@
 {
     "name": "slides",
     "devDependencies": {
+        "parcel-bundler": "^1.12.4",
         "semistandard": "*"
     },
+    "semistandard": {
+        "ignore": [
+            "index.js"
+        ]
+    },
     "scripts": {
-        "test": "semistandard --fix"
+        "test": "semistandard --fix",
+        "start": "parcel watch entry.js -d ./ --out-file index.js",
+        "build": "parcel build entry.js --no-minify -d ./ --out-file index.js"
     }
 }
