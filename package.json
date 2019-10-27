@@ -11,7 +11,9 @@
     },
     "scripts": {
         "test": "semistandard --fix",
-        "start": "parcel watch entry.js -d ./ --out-file index.js",
-        "build": "parcel build entry.js --no-minify -d ./ --out-file index.js"
+        "start": "parcel watch src/entry.js -d ./ --out-file index.js",
+        "build": "parcel build src/entry.js --no-minify -d ./ --out-file index.js",
+        "svn-checkout": "svn checkout https://plugins.svn.wordpress.org/slide/trunk svn && rm -rf .svn && mv svn/.svn .svn && rm -rf svn",
+        "svn-ignore": "svn propset svn:ignore -F .svnignore ."
     }
 }
