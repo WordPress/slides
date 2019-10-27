@@ -987,7 +987,7 @@
   hooks: { addFilter },
   element: { createElement: e, Fragment: f },
   blockEditor: { InspectorControls },
-  components: { PanelBody, TextControl },
+  components: { PanelBody, TextControl, SelectControl },
   i18n: { __ }
 }) => {
   const allowedBlocks = new Set(['core/paragraph']);
@@ -1005,6 +1005,9 @@
         attributes: {
           ...settings.attributes,
           fontFamily: {
+            type: 'string'
+          },
+          fontWeight: {
             type: 'string'
           }
         }
@@ -1028,14 +1031,31 @@
             e(
               PanelBody,
               {
-                title: __('Font Family', 'slide'),
-                icon: 'format-video',
+                title: __('Font', 'slide'),
+                icon: 'format-text',
                 initialOpen: false
               },
               e(TextControl, {
-                label: __('Font Family'),
+                label: __('Font Family', 'slide'),
                 value: attributes.fontFamily,
                 onChange: (fontFamily) => setAttributes({ fontFamily })
+              }),
+              e(SelectControl, {
+                label: __('Font Weight', 'slide'),
+                help: __('Depending on the Font, some options may not be available.'),
+                options: [
+                  { value: '100', label: __('Thin', 'slide') },
+                  { value: '200', label: __('Extra Light', 'slide') },
+                  { value: '300', label: __('Light', 'slide') },
+                  { value: '400', label: __('Normal', 'slide') },
+                  { value: '500', label: __('Medium', 'slide') },
+                  { value: '600', label: __('Semi Bold', 'slide') },
+                  { value: '700', label: __('Bold', 'slide') },
+                  { value: '800', label: __('Extra Bold', 'slide') },
+                  { value: '900', label: __('Black', 'slide') }
+                ],
+                value: attributes.fontWeight || '400',
+                onChange: (fontWeight) => setAttributes({ fontWeight })
               })
             )
           )
@@ -1052,7 +1072,7 @@
         if (allowedBlocks.has(props.block.name)) {
           const { wrapperProps = {}, attributes } = props;
           const { style = {} } = wrapperProps;
-          const { fontFamily } = attributes;
+          const { fontFamily, fontWeight } = attributes;
 
           if (fontFamily) {
             props = {
@@ -1061,7 +1081,8 @@
                 ...wrapperProps,
                 style: {
                   ...style,
-                  fontFamily
+                  fontFamily,
+                  fontWeight
                 }
               }
             };
@@ -1081,14 +1102,15 @@
         return extraProps;
       }
 
-      const { fontFamily } = attributes;
+      const { fontFamily, fontWeight } = attributes;
       const { style = {} } = extraProps;
 
       return {
         ...extraProps,
         style: {
           ...style,
-          fontFamily
+          fontFamily,
+          fontWeight
         }
       };
     }

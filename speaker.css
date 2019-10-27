@@ -152,7 +152,6 @@ body {
     height: auto;
     top: auto;
     left: auto;
-    background: #fff;
 }
 
 #current-slide iframe,
@@ -161,6 +160,7 @@ body {
     left: 0;
     position: absolute;
     top: 0;
+    background: #fff;
 }
 
 .overlay-element {

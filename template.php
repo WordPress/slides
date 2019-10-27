@@ -95,6 +95,11 @@
 			flex-direction: column;
 		}
 
+		.receiver .reveal .slides *,
+		.receiver .reveal .backgrounds * {
+			pointer-events: none;
+		}
+
 		.reveal .controls,
 		.reveal .progress {
 			color: currentColor;

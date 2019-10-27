@@ -136,8 +136,8 @@
     document.querySelector('#current-slide').appendChild(currentSlide);
 
     upcomingSlide = document.createElement('iframe');
-    upcomingSlide.setAttribute('width', 640);
-    upcomingSlide.setAttribute('height', 512);
+    upcomingSlide.setAttribute('width', 1280);
+    upcomingSlide.setAttribute('height', 1024);
     upcomingSlide.setAttribute('src', upcomingURL);
     document.querySelector('#upcoming-slide').appendChild(upcomingSlide);
   }
