@@ -166,6 +166,10 @@
 			height: 720,
 			width: <?php echo get_post_meta( get_the_ID(), 'presentation-width', true ) ?: '960'; ?>,
 			margin: 0.08,
+			keyboard: {
+				38: 'prev',
+				40: 'next',
+			},
 			// minScale: 1,
 			// maxScale: 1,
 		} );
