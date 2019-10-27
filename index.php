@@ -236,6 +236,10 @@ foreach ( array(
 }
 
 add_filter( 'block_editor_settings', function( $settings ) {
+	if ( get_current_screen()->post_type !== 'presentation' ) {
+		return $settings;
+	}
+
 	$settings['styles'] = array();
 	return $settings;
 }, 99999 );
