@@ -1,4 +1,5 @@
 import FontPicker from './font-picker';
+import FontWeightPicker from './font-weight-picker';
 import CodeEditor from './code-editor';
 
 const {
@@ -203,22 +204,11 @@ registerPlugin('slide', {
             });
           }
         }),
-        e(SelectControl, {
+        e(FontWeightPicker, {
           label: __('Font Weight', 'slide'),
-          help: __('Depending on the Font, some options may not be available.'),
-          options: [
-            { value: '100', label: __('Thin', 'slide') },
-            { value: '200', label: __('Extra Light', 'slide') },
-            { value: '300', label: __('Light', 'slide') },
-            { value: '400', label: __('Normal', 'slide') },
-            { value: '500', label: __('Medium', 'slide') },
-            { value: '600', label: __('Semi Bold', 'slide') },
-            { value: '700', label: __('Bold', 'slide') },
-            { value: '800', label: __('Extra Bold', 'slide') },
-            { value: '900', label: __('Black', 'slide') }
-          ],
           value: meta[fontWeightHeadingKey] || '400',
-          onChange: (value) => updateMeta(value, fontWeightHeadingKey)
+          onChange: (value) => updateMeta(value, fontWeightHeadingKey),
+          fontFamily: meta[fontFamilyHeadingKey]
         })
       ),
       e(
