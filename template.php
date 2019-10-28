@@ -2,6 +2,11 @@
 <html <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<script>
+		if ( /[?&]receiver/i.test( window.location.search ) ) {
+			document.documentElement.classList.add( 'receiver' );
+		}
+	</script>
 	<?php wp_head(); ?>
 	<style>
 		ul#wp-admin-bar-root-default li.slide-button {
@@ -149,10 +154,6 @@
 	<script>var notesFilePath = '<?php echo plugins_url( 'speaker.html', __FILE__ ); ?>';</script>
 	<?php wp_footer(); ?>
 	<script>
-		if ( /[?&]receiver/i.test( window.location.search ) ) {
-			document.body.classList.add( 'receiver' );
-		}
-
 		Reveal.initialize( {
 			transition: '<?php echo get_post_meta( get_the_ID(), 'presentation-transition', true ) ?: 'none'; ?>',
 			backgroundTransition: '<?php echo get_post_meta( get_the_ID(), 'presentation-background-transition', true ) ?: 'none'; ?>',
