@@ -170,12 +170,10 @@
 				38: 'prev',
 				40: 'next',
 			},
+			// We center in CSS.
+			center: false,
 			// minScale: 1,
 			// maxScale: 1,
-		} );
-		document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
-			element.style.width = 100 / Reveal.getScale() + 'vw';
-			element.style.maxHeight = 84 / Reveal.getScale() + 'vh';
 		} );
 		document.querySelectorAll( '.wp-block-media-text' ).forEach( ( element ) => {
 			const percentage = parseInt( element.style.gridTemplateColumns, 10 );
@@ -188,6 +186,16 @@
 				.style.flexBasis = `${ percentage }%`;
 			element.querySelector( '.wp-block-media-text__content' )
 				.style.flexBasis = `${ 100 - percentage }%`;
+		} );
+		document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
+			element.style.width = 100 / Reveal.getScale() + 'vw';
+			element.style.maxHeight = 84 / Reveal.getScale() + 'vh';
+		} );
+		Reveal.addEventListener( 'ready', function( event ) {
+			document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
+				element.style.width = 100 / Reveal.getScale() + 'vw';
+				element.style.maxHeight = 84 / Reveal.getScale() + 'vh';
+			} );
 		} );
 		Reveal.addEventListener( 'resize', function( event ) {
 			document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
