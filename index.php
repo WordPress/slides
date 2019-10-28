@@ -254,7 +254,7 @@ add_filter( 'default_content', function( $post_content, $post ) {
 
 add_filter( 'render_block', function( $block_content, $block ) {
 	if ( ! current_user_can( 'edit_posts' ) ) {
-		return;
+		return $block_content;
 	}
 
 	if ( $block[ 'blockName' ] !== 'slide/slide' ) {
