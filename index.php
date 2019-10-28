@@ -246,7 +246,7 @@ add_filter( 'block_editor_settings', function( $settings ) {
 
 add_filter( 'default_content', function( $post_content, $post ) {
 	if ( $post->post_type !== 'presentation' ) {
-		return;
+		return $post_content;
 	}
 
 	return file_get_contents( __DIR__ . '/default-content.html' );
