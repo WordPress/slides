@@ -171,7 +171,3 @@
 	width: 100%;
 	display: block;
 }
-
-.wp-block-slide-slide *:last-child {
-	margin-bottom: 0 !important;
-}
