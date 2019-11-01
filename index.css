@@ -84,9 +84,15 @@ div.is-selected[data-type="slide/slide"]:before {
 
 .wp-block-slide-slide__body {
 	position: relative;
-	padding: 50px;
+	padding: 28.125px 50px;
 	overflow: hidden;
 	outline: 1px dashed currentColor;
+}
+
+.presentation-contain .wp-block-slide-slide__body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .has-child-selected .wp-block-slide-slide__body {
@@ -98,6 +104,9 @@ div.is-selected[data-type="slide/slide"]:before {
 	width: 960px !important;
 	height: 720px !important;
 	padding: 0.2em;
+}
+
+html:not( .presentation-contain ) .wp-block-slide-slide {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

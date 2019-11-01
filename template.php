@@ -22,6 +22,15 @@
 			font-weight: bold;
 		}
 
+		#wpadminbar {
+			opacity: 0.5;
+			transition: opacity 0.5s ease;
+		}
+
+		#wpadminbar:hover {
+			opacity: 1;
+		}
+
 		@media print {
 			.print-pdf #wpadminbar {
 				display: none;
@@ -50,6 +59,10 @@
 		/* Remove margin for admin bar. */
 		html {
 			margin-top: 0 !important;
+		}
+
+		.presentation-contain body {
+			background: #000;
 		}
 
 		.reveal {
@@ -100,6 +113,18 @@
 			flex-direction: column;
 		}
 
+		.presentation-contain .slides {
+			overflow: hidden;
+			padding: 28.125px 50px;
+			box-sizing: border-box;
+		}
+
+		.presentation-contain .slides > section {
+			left: 50px;
+			right: 50px;
+			width: auto;
+		}
+
 		.receiver .reveal .slides *,
 		.receiver .reveal .backgrounds * {
 			pointer-events: none;
@@ -127,13 +152,18 @@
 			flex-basis: 50%;
 		}
 
-		.alignfull {
+		html:not( .presentation-contain ) .alignfull {
 			width: 100vw;
 			left: 50%;
 			position: relative;
 			transform: translate(-50%, 0);
 			max-width: none;
 			max-height: 100vh;
+		}
+
+		.presentation-contain .alignfull {
+			margin: 0 calc( -50px - <?php echo get_post_meta( get_the_ID(), 'presentation-horizontal-padding', true ) ?: '0.2em'; ?> );
+			max-width: none;
 		}
 
 		.reveal .slides > section,
@@ -154,6 +184,8 @@
 	<script>var notesFilePath = '<?php echo plugins_url( 'speaker.html', __FILE__ ); ?>';</script>
 	<?php wp_footer(); ?>
 	<script>
+		const contain = <?php echo get_post_meta( get_the_ID(), 'presentation-contain', true ) ?: 'false'; ?>;
+
 		Reveal.initialize( {
 			transition: '<?php echo get_post_meta( get_the_ID(), 'presentation-transition', true ) ?: 'none'; ?>',
 			backgroundTransition: '<?php echo get_post_meta( get_the_ID(), 'presentation-background-transition', true ) ?: 'none'; ?>',
@@ -166,7 +198,7 @@
 			hideAddressBar: true,
 			height: 720,
 			width: <?php echo get_post_meta( get_the_ID(), 'presentation-width', true ) ?: '960'; ?>,
-			margin: 0.08,
+			margin: contain ? 0 : 0.08,
 			keyboard: {
 				38: 'prev',
 				40: 'next',
@@ -188,22 +220,33 @@
 			element.querySelector( '.wp-block-media-text__content' )
 				.style.flexBasis = `${ 100 - percentage }%`;
 		} );
-		document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
-			element.style.width = 100 / Reveal.getScale() + 'vw';
-			element.style.maxHeight = 84 / Reveal.getScale() + 'vh';
-		} );
-		Reveal.addEventListener( 'ready', function( event ) {
+
+		if ( contain ) {
+			const slidesElement = document.querySelector( '.slides' );
+			const backgroundsElement = document.querySelector( '.backgrounds' );
+
+			slidesElement.appendChild( backgroundsElement );
+			document.documentElement.classList.add( 'presentation-contain' );
+		} else {
 			document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
 				element.style.width = 100 / Reveal.getScale() + 'vw';
 				element.style.maxHeight = 84 / Reveal.getScale() + 'vh';
 			} );
-		} );
-		Reveal.addEventListener( 'resize', function( event ) {
-			document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
-				element.style.width = 100 / event.scale + 'vw';
-				element.style.maxHeight = 100 / event.scale + 'vh';
+			Reveal.addEventListener( 'ready', function( event ) {
+				document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
+					element.style.width = 100 / Reveal.getScale() + 'vw';
+					element.style.maxHeight = 84 / Reveal.getScale() + 'vh';
+				} );
 			} );
-		} );
+			Reveal.addEventListener( 'resize', function( event ) {
+				document.querySelectorAll( '.alignfull' ).forEach( ( element ) => {
+					element.style.width = 100 / event.scale + 'vw';
+					element.style.maxHeight = 100 / event.scale + 'vh';
+				} );
+			} );
+		}
+
+		// Admin bar buttons.
 		( () => {
 			const bar = document.querySelector('ul#wp-admin-bar-root-default');
 

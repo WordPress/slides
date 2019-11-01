@@ -4,11 +4,11 @@ import CodeEditor from './code-editor';
 
 const {
   i18n: { __ },
-  element: { createElement: e },
+  element: { createElement: e, useEffect },
   plugins: { registerPlugin },
   editPost: { PluginDocumentSettingPanel },
   data: { useSelect, useDispatch },
-  components: { TextareaControl, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink, TextControl, RadioControl },
+  components: { TextareaControl, RangeControl, SelectControl, ToggleControl, Button, FocalPointPicker, ExternalLink, TextControl, RadioControl, CheckboxControl },
   blockEditor: { MediaUpload, __experimentalGradientPickerControl, ColorPalette },
   url: { addQueryArgs }
 } = window.wp;
@@ -36,6 +36,7 @@ const widthKey = 'presentation-width';
 const horizontalPaddingKey = 'presentation-horizontal-padding';
 const verticalPaddingKey = 'presentation-vertical-padding';
 const colorPaletteKey = 'presentation-color-palette';
+const containKey = 'presentation-contain';
 const ALLOWED_MEDIA_TYPES = ['image'];
 
 registerPlugin('slide', {
@@ -66,6 +67,25 @@ registerPlugin('slide', {
       'padding-left': meta[horizontalPaddingKey] ? meta[horizontalPaddingKey] : '0.2em',
       'padding-right': meta[horizontalPaddingKey] ? meta[horizontalPaddingKey] : '0.2em'
     };
+
+    let width = parseInt((meta[widthKey] || '960'), 10) + 30;
+
+    if (meta[containKey] === 'true') {
+      rules.width = 'auto !important';
+      rules.height = 'auto !important';
+      bodyRules.width = meta[widthKey] ? meta[widthKey] + 'px !important' : '960px !important';
+      bodyRules.height = '720px !important';
+    } else {
+      width += 100;
+    }
+
+    useEffect(() => {
+      if (meta[containKey] === 'true') {
+        document.documentElement.classList.add('presentation-contain');
+      } else {
+        document.documentElement.classList.remove('presentation-contain');
+      }
+    });
 
     const backgroundRules = {
       'background-image': meta[backgroundUrlKey] ? `url("${meta[backgroundUrlKey]}")` : 'none',
@@ -113,10 +133,10 @@ registerPlugin('slide', {
         null,
           `.wp-block-slide-slide h1, .wp-block-slide-slide h2, .wp-block-slide-slide h3, .wp-block-slide-slide h4, .wp-block-slide-slide h5, .wp-block-slide-slide h6 { font-weight: ${meta[fontWeightHeadingKey]} }`
       ),
-      !!meta[widthKey] && e(
+      e(
         'style',
         null,
-          `.editor-styles-wrapper .editor-writing-flow { width: ${parseInt(meta[widthKey], 10) + 130}px !important; }`
+          `.editor-styles-wrapper .editor-writing-flow { width: ${width}px !important; }`
       ),
       e(
         PluginDocumentSettingPanel,
@@ -135,6 +155,18 @@ registerPlugin('slide', {
             editPost({
               meta: {
                 [widthKey]: value === '16:9' ? '1280' : ''
+              }
+            });
+          }
+        }),
+        e(CheckboxControl, {
+          label: __('Contain view to dimensions', 'slide'),
+          help: __('This can be useful if positions from background and full width blocks must be preserved.', 'slide'),
+          checked: meta[containKey] === 'true',
+          onChange: (value) => {
+            editPost({
+              meta: {
+                [containKey]: value + ''
               }
             });
           }
