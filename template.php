@@ -61,6 +61,7 @@
 			margin-top: 0 !important;
 		}
 
+		.presentation-contain html,
 		.presentation-contain body {
 			background: #000;
 		}
