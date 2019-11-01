@@ -99,7 +99,7 @@
 			opacity: <?php echo (int) get_post_meta( get_the_ID(), 'presentation-background-opacity', true ) / 100 ?: '1'; ?>;
 		}
 
-		section.wp-block-slide-slide {
+		.reveal .slides section.wp-block-slide-slide {
 			top: auto !important;
 			padding-top: <?php echo get_post_meta( get_the_ID(), 'presentation-vertical-padding', true ) ?: '0.2em'; ?> !important;
 			padding-bottom: <?php echo get_post_meta( get_the_ID(), 'presentation-vertical-padding', true ) ?: '0.2em'; ?> !important;
@@ -114,10 +114,27 @@
 			flex-direction: column;
 		}
 
+		.print-pdf .slides {
+			display: block;
+		}
+
+		.print-pdf .pdf-page {
+			justify-content: center;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.pdf-page,
 		.presentation-contain .slides {
 			overflow: hidden;
 			padding: 28.125px 50px;
 			box-sizing: border-box;
+		}
+
+		.reveal .slides .pdf-page > section {
+			position: static !important;
+			z-index: 1;
+			width: 100% !important;
 		}
 
 		.presentation-contain .slides > section {
@@ -210,6 +227,7 @@
 			},
 			// We center in CSS.
 			center: false,
+			pdfMaxPagesPerSlide: 1,
 			// minScale: 1,
 			// maxScale: 1,
 		} );

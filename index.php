@@ -141,10 +141,10 @@ add_action( 'wp_enqueue_scripts', function() {
 	);
 
 	if ( isset( $_GET[ 'print-pdf' ] ) ) {
-		wp_add_inline_script(
-			'slide-reveal',
-			'window.print()'
-		);
+		// wp_add_inline_script(
+		// 	'slide-reveal',
+		// 	'window.print()'
+		// );
 
 		wp_enqueue_style(
 			'slide-reveal-pdf',
