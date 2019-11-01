@@ -170,6 +170,10 @@
 		.reveal .slides > section > section {
 			padding: <?php echo get_post_meta( get_the_ID(), 'presentation-vertical-padding', true ) ?: '0.2em'; ?> 0;
 		}
+
+		.reveal[data-background-transition="none"] .slide-background {
+			transition: none;
+		}
 	</style>
 	<style>
 		<?php echo get_post_meta( get_the_ID(), 'presentation-css', true ); ?>
