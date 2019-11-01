@@ -251,6 +251,10 @@
 			} );
 		}
 
+		const autoplay = document.querySelectorAll('[autoplay]');
+
+		autoplay.forEach( ( el ) => el.setAttribute( 'data-autoplay', 'true' ) );
+
 		// Admin bar buttons.
 		( () => {
 			const bar = document.querySelector('ul#wp-admin-bar-root-default');
