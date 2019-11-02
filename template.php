@@ -203,7 +203,6 @@
 			<?php the_content(); ?>
 		</div>
 	</div>
-	<script>var notesFilePath = '<?php echo add_query_arg( 'speaker', 'true', get_permalink() ); ?>';</script>
 	<?php wp_footer(); ?>
 	<script>
 		const contain = <?php echo get_post_meta( get_the_ID(), 'presentation-contain', true ) ?: 'false'; ?>;
@@ -327,7 +326,10 @@
 				event.preventDefault();
 			} );
 			speakerButton.addEventListener( 'click', ( event ) => {
-				Reveal.getPlugin( 'notes' ).open( notesFilePath );
+				const { protocol, host, pathname, search } = window.location;
+				let url = [protocol, '//', host, pathname].join('');
+				url += search ? search + '&speaker=true' : '?speaker=true';
+				Reveal.getPlugin( 'notes' ).open(url  );
 				event.preventDefault();
 			} );
 		} )();
