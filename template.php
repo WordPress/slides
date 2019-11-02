@@ -31,12 +31,7 @@
 			opacity: 1;
 		}
 
-		@media print {
-			.print-pdf #wpadminbar {
-				display: none;
-			}
-		}
-
+		.print-pdf #wpadminbar,
 		.receiver #wpadminbar {
 			display: none;
 		}
