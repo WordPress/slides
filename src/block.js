@@ -1,3 +1,5 @@
+import CodeEditor from './code-editor';
+
 const {
   i18n: { __ },
   blocks: { registerBlockType },
@@ -44,6 +46,9 @@ registerBlockType('slide/slide', {
       type: 'boolean'
     },
     backgroundIframeUrl: {
+      type: 'string'
+    },
+    backgroundSvg: {
       type: 'string'
     }
   },
@@ -234,6 +239,30 @@ registerBlockType('slide/slide', {
         e(
           PanelBody,
           {
+            title: __('Background SVG', 'slide'),
+            icon: 'format-video',
+            initialOpen: false
+          },
+          e(CodeEditor, {
+            mode: 'htmlmixed',
+            value: attributes.backgroundSvg,
+            onChange: (backgroundSvg) => setAttributes({ backgroundSvg })
+          }),
+          e('br'), e('br'),
+          !!attributes.backgroundSvg && e(RangeControl, {
+            label: __('Opacity', 'slide'),
+            value: attributes.backgroundOpacity ? parseInt(attributes.backgroundOpacity, 10) : undefined,
+            min: 0,
+            max: 100,
+            initialPosition: 100,
+            onChange: (value) => setAttributes({
+              backgroundOpacity: value + ''
+            })
+          })
+        ),
+        e(
+          PanelBody,
+          {
             title: __('Visibility', 'slide'),
             icon: 'visibility',
             initialOpen: false
@@ -274,6 +303,11 @@ registerBlockType('slide/slide', {
           },
           !!attributes.backgroundIframeUrl && e('iframe', {
             src: attributes.backgroundIframeUrl
+          }),
+          !!attributes.backgroundSvg && e('div', {
+            dangerouslySetInnerHTML: {
+              __html: attributes.backgroundSvg
+            }
           })
         ),
         e(
@@ -296,7 +330,8 @@ registerBlockType('slide/slide', {
       'data-background-position': attributes.focalPoint ? `${attributes.focalPoint.x * 100}% ${attributes.focalPoint.y * 100}%` : undefined,
       'data-background-opacity': attributes.backgroundOpacity ? attributes.backgroundOpacity / 100 : undefined,
       'data-background-iframe': attributes.backgroundIframeUrl ? attributes.backgroundIframeUrl : undefined,
-      'data-background-size': attributes.backgroundSize ? attributes.backgroundSize : undefined
+      'data-background-size': attributes.backgroundSize ? attributes.backgroundSize : undefined,
+      'data-background-svg': attributes.backgroundSvg ? attributes.backgroundSvg : undefined
     },
     e(InnerBlocks.Content)
   )

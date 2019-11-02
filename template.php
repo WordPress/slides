@@ -244,6 +244,17 @@
 				.style.flexBasis = `${ 100 - percentage }%`;
 		} );
 
+		function backgroundSvg( event ) {
+			const svg = event.currentSlide.getAttribute( 'data-background-svg' );
+			window.setTimeout( () => {
+				const background = document.querySelector( '.slide-background.present .slide-background-content' );
+				console.log( event, background.innerHTML = svg );
+			} );
+		}
+
+		Reveal.addEventListener( 'ready', backgroundSvg );
+		Reveal.addEventListener( 'slidechanged', backgroundSvg );
+
 		if ( contain ) {
 			const slidesElement = document.querySelector( '.slides' );
 			const backgroundsElement = document.querySelector( '.backgrounds' );

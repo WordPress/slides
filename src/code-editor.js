@@ -3,7 +3,7 @@ const {
   codeEditor: { initialize, defaultSettings }
 } = window.wp;
 
-export default memo(({ onChange, ...props }) => {
+export default memo(({ onChange, mode, ...props }) => {
   const ref = useRef();
 
   useEffect(() => {
@@ -12,7 +12,7 @@ export default memo(({ onChange, ...props }) => {
       codemirror: {
         ...defaultSettings.codemirror,
         tabSize: 2,
-        mode: 'css',
+        mode,
         lineNumbers: false
       }
     });
