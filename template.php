@@ -247,13 +247,20 @@
 		function backgroundSvg( event ) {
 			const svg = event.currentSlide.getAttribute( 'data-background-svg' );
 
+			console.log( event );
+
 			if ( ! svg ) {
 				return;
 			}
 
+			const targetBackgound = document.querySelectorAll( '.slide-background' )[ event.indexh ];
+
+			if ( ! targetBackgound ) {
+				return;
+			}
+
 			window.setTimeout( () => {
-				const background = document.querySelector( '.slide-background.present .slide-background-content' );
-				background.innerHTML = svg;
+				targetBackgound.innerHTML = svg;
 			} );
 		}
 
