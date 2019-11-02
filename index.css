@@ -214,3 +214,9 @@ div[data-type="slide/slide"] div[data-block] > .components-notice {
 .wp-block-table table {
 	border-collapse: unset;
 }
+
+.wp-block-slide-slide__body + .components-base-control,
+.wp-block-slide-slide__body + .components-base-control textarea {
+	line-height: 1.5;
+	font-size: 42px;
+}

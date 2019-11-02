@@ -315,7 +315,13 @@ registerBlockType('slide/slide', {
           { className },
           e(InnerBlocks)
         )
-      )
+      ),
+      e(TextareaControl, {
+        label: __('Speaker notes', 'slide'),
+        value: attributes.notes,
+        onChange: (notes) => setAttributes({ notes }),
+        rows: 5
+      })
     );
   },
   save: ({ attributes }) => e(

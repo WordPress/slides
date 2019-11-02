@@ -16,12 +16,12 @@
     document.querySelector('.slide-current-number').textContent = h;
   });
 
-  document.querySelector( '#prev' ).addEventListener( 'click', () => {
+  document.querySelector('#prev').addEventListener('click', () => {
     callRevealApi('prev');
-  } );
-  document.querySelector( '#next' ).addEventListener( 'click', () => {
+  });
+  document.querySelector('#next').addEventListener('click', () => {
     callRevealApi('next');
-  } );
+  });
 
   window.addEventListener('message', function (event) {
     var data = JSON.parse(event.data);

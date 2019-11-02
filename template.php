@@ -225,6 +225,7 @@
 				38: 'prev',
 				40: 'next',
 			},
+			overview: false,
 			// We center in CSS.
 			center: false,
 			pdfMaxPagesPerSlide: 1,
@@ -246,9 +247,14 @@
 
 		function backgroundSvg( event ) {
 			const svg = event.currentSlide.getAttribute( 'data-background-svg' );
+
+			if ( ! svg ) {
+				return;
+			}
+
 			window.setTimeout( () => {
 				const background = document.querySelector( '.slide-background.present .slide-background-content' );
-				console.log( event, background.innerHTML = svg );
+				background.innerHTML = svg;
 			} );
 		}
 
