@@ -166,7 +166,7 @@ add_action( 'wp_enqueue_scripts', function() {
 		'slide-reveal-notes',
 		plugins_url( 'reveal/notes.min.js', __FILE__ ),
 		array( 'slide-reveal' ),
-		'3.8.0',
+		filemtime( dirname( __FILE__ ) . '/reveal/notes.min.js' ),
 		true
 	);
 

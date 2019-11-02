@@ -33,6 +33,11 @@
     }
   });
 
+  window.opener.addEventListener('beforeunload', () => {
+    window.close();
+    console.log( 'test' );
+  });
+
   window.addEventListener('message', function (event) {
     var data = JSON.parse(event.data);
 
@@ -47,8 +52,9 @@
       } else if (data.type === 'state') {
         handleStateMessage(data);
       } else if (data.type === 'return') {
+        console.log( data, pendingCalls );
         pendingCalls[data.callId](data.result);
-        delete pendingCalls[data.callId];
+        // delete pendingCalls[data.callId];
       }
     // Messages sent by the reveal.js inside of the current slide preview
     } else if (data && data.namespace === 'reveal') {

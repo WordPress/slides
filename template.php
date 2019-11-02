@@ -242,8 +242,6 @@
 		function backgroundSvg( event ) {
 			const svg = event.currentSlide.getAttribute( 'data-background-svg' );
 
-			console.log( event );
-
 			if ( ! svg ) {
 				return;
 			}
