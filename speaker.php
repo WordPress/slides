@@ -34,6 +34,10 @@
                 <div class="timer">
                     <span class="hours-value">00</span><span class="minutes-value">:00</span><span class="seconds-value">:00</span>
                 </div>
+                <div>
+                    <button id="prev">Previous</button>
+                    <button id="next">Next</button>
+                </div>
             </div>
         </div>
         <div class="speaker-controls-notes">

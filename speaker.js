@@ -16,6 +16,13 @@
     document.querySelector('.slide-current-number').textContent = h;
   });
 
+  document.querySelector( '#prev' ).addEventListener( 'click', () => {
+    callRevealApi('prev');
+  } );
+  document.querySelector( '#next' ).addEventListener( 'click', () => {
+    callRevealApi('next');
+  } );
+
   window.addEventListener('message', function (event) {
     var data = JSON.parse(event.data);
 
@@ -126,7 +133,7 @@
 
     var urlSeparator = /\?/.test(data.url) ? '&' : '?';
     var hash = '#/' + data.state.indexh + '/' + data.state.indexv;
-    var currentURL = data.url + urlSeparator + params + '&postMessageEvents=true&controls=true' + hash;
+    var currentURL = data.url + urlSeparator + params + '&postMessageEvents=true' + hash;
     var upcomingURL = data.url + urlSeparator + params + '&controls=false' + hash;
 
     currentSlide = document.createElement('iframe');

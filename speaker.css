@@ -20,6 +20,7 @@ body {
     height: 200%;
     border: 1px solid #ddd;
     transform: scale(.5) translate(-50%, -50%);
+    pointer-events: none;
 }
 
 #current-slide .label,
