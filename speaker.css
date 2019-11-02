@@ -3,6 +3,10 @@ body {
     font-size: 18px;
 }
 
+#wpadminbar {
+    display: none;
+}
+
 #current-slide,
 #upcoming-slide,
 #speaker-controls {
@@ -12,9 +16,10 @@ body {
 
 #current-slide iframe,
 #upcoming-slide iframe {
-    width: 100%;
-    height: 100%;
+    width: 200%;
+    height: 200%;
     border: 1px solid #ddd;
+    transform: scale(.5) translate(-50%, -50%);
 }
 
 #current-slide .label,

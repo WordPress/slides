@@ -82,6 +82,10 @@ add_action( 'admin_enqueue_scripts', function() {
 }, 99999 );
 
 add_action( 'wp_enqueue_scripts', function() {
+	if ( ! is_singular( 'presentation' ) ) {
+		return;
+	}
+
 	wp_deregister_style( 'wp-block-library-theme' );
 	wp_register_style(
 		'wp-block-library-theme',
@@ -105,6 +109,10 @@ add_filter( 'template_include', function( $path ) {
 		return $path;
 	}
 
+	if ( isset( $_GET[ 'speaker' ] ) ) {
+		return dirname( __FILE__ ) . '/speaker.php';
+	}
+
 	the_post();
 
 	return dirname( __FILE__ ) . '/template.php';
@@ -114,6 +122,35 @@ add_filter( 'template_include', function( $path ) {
 // individually crafted.
 add_action( 'wp_enqueue_scripts', function() {
 	if ( ! is_singular( 'presentation' ) ) {
+		return;
+	}
+
+	global $wp_styles;
+
+	foreach ( $wp_styles->queue as $handle ) {
+		$info = $wp_styles->registered[ $handle ];
+
+		if ( $info->src === get_stylesheet_uri() ) {
+			wp_dequeue_style( $handle );
+		}
+	}
+
+	if ( isset( $_GET[ 'speaker' ] ) ) {
+		wp_enqueue_script(
+			'slide-speaker',
+			plugins_url( 'speaker.js', __FILE__ ),
+			array(),
+			filemtime( dirname( __FILE__ ) . '/speaker.js' ),
+			true
+		);
+
+		wp_enqueue_style(
+			'slide-speaker',
+			plugins_url( 'speaker.css', __FILE__ ),
+			array(),
+			filemtime( dirname( __FILE__ ) . '/speaker.css' )
+		);
+
 		return;
 	}
 
@@ -180,16 +217,6 @@ add_action( 'wp_enqueue_scripts', function() {
 		array(),
 		filemtime( dirname( __FILE__ ) . '/common.css' )
 	);
-
-	global $wp_styles;
-
-	foreach ( $wp_styles->queue as $handle ) {
-		$info = $wp_styles->registered[ $handle ];
-
-		if ( $info->src === get_stylesheet_uri() ) {
-			wp_dequeue_style( $handle );
-		}
-	}
 }, 99999 );
 
 foreach ( array(

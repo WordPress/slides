@@ -1,10 +1,20 @@
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Speaker View</title>
-        <link href="speaker.css" rel="stylesheet">
-	</head>
+<html <?php language_attributes(); ?>>
+    <head>
+        <meta charset="<?php bloginfo( 'charset' ); ?>">
+        <script>
+            if ( /[?&]receiver/i.test( window.location.search ) ) {
+                document.documentElement.classList.add( 'receiver' );
+            }
+        </script>
+        <?php wp_head(); ?>
+        <style>
+            /* Remove margin for admin bar. */
+            html {
+                margin-top: 0 !important;
+            }
+        </style>
+    </head>
 	<body>
         <div id="slide-container">
             <div id="current-slide-container"><div id="current-slide"></div></div>
@@ -30,6 +40,6 @@
             <h4 class="label">Notes</h4>
             <div class="value"></div>
         </div>
-		<script src="speaker.js"></script>
+        <?php wp_footer(); ?>
 	</body>
 </html>

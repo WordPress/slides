@@ -203,7 +203,7 @@
 			<?php the_content(); ?>
 		</div>
 	</div>
-	<script>var notesFilePath = '<?php echo plugins_url( 'speaker.html', __FILE__ ); ?>';</script>
+	<script>var notesFilePath = '<?php echo add_query_arg( 'speaker', 'true', get_permalink() ); ?>';</script>
 	<?php wp_footer(); ?>
 	<script>
 		const contain = <?php echo get_post_meta( get_the_ID(), 'presentation-contain', true ) ?: 'false'; ?>;
