@@ -179,3 +179,17 @@ body {
     float: right;
     border-bottom: 0;
 }
+
+button {
+    border-radius: 3px;
+    line-height: 24px;
+    border: none;
+    padding: 0 5px;
+    background: #fff;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.speaker-controls-time > div {
+    margin-bottom: 10px;
+}

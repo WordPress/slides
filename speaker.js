@@ -23,6 +23,16 @@
     callRevealApi('next');
   });
 
+  const editorButton = document.querySelector('#editor');
+
+  editorButton.addEventListener('click', () => {
+    const href = editorButton.getAttribute('data-href');
+    if (href) {
+      window.opener.location.href = href;
+      window.close();
+    }
+  });
+
   window.addEventListener('message', function (event) {
     var data = JSON.parse(event.data);
 

@@ -24,12 +24,10 @@
                 <div class="slide-count">
                     <span class="slide-current-number">&hellip;</span> of <span class="slide-total-number">&hellip;</span>
                 </div>
-                <br>
                 <h4 class="label">Time</h4>
                 <div class="clock">
                     <span class="clock-value">0:00 AM</span>
                 </div>
-                <br>
                 <h4 class="label"><span class="reset-button">Click to Reset</span></h4>
                 <div class="timer">
                     <span class="hours-value">00</span><span class="minutes-value">:00</span><span class="seconds-value">:00</span>
@@ -37,6 +35,10 @@
                 <div>
                     <button id="prev">Previous</button>
                     <button id="next">Next</button>
+                </div>
+                <div>
+                    <button id="editor" data-href="<?php echo get_edit_post_link() ?>">Presentiation editor (public)</button>
+                    <div style="font-size: 14px;margin-top:5px;">This will exit speaker view. To enter speaker view again, use the browser back button, then click the "Speaker View" button in the admin bar.</div>
                 </div>
             </div>
         </div>
