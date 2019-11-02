@@ -20,6 +20,10 @@
             <div id="current-slide-container"><div id="current-slide"></div></div>
             <div id="upcoming-slide-container"><div id="upcoming-slide"><span class="overlay-element label">Upcoming</span></div></div>
             <div class="speaker-controls-time">
+                <div>
+                    <button id="prev">Previous</button>
+                    <button id="next">Next</button>
+                </div>
                 <h4 class="label">Slide</h4>
                 <div class="slide-count">
                     <span class="slide-current-number">&hellip;</span> of <span class="slide-total-number">&hellip;</span>
@@ -31,10 +35,6 @@
                 <h4 class="label"><span class="reset-button">Click to Reset</span></h4>
                 <div class="timer">
                     <span class="hours-value">00</span><span class="minutes-value">:00</span><span class="seconds-value">:00</span>
-                </div>
-                <div>
-                    <button id="prev">Previous</button>
-                    <button id="next">Next</button>
                 </div>
                 <div>
                     <button id="editor" data-href="<?php echo get_edit_post_link() ?>">Presentiation editor (public)</button>
