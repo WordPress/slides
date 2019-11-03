@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Slide
+ * Plugin Name: Slides
  * Plugin URI:  https://wordpress.org/plugins/slide/
  * Description: Allows you to create presentations with the block editor.
  * Version:     0.0.37
