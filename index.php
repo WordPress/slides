@@ -170,6 +170,43 @@ add_action( 'wp_enqueue_scripts', function() {
 		true
 	);
 
+	wp_enqueue_script(
+		'slide-template',
+		plugins_url( 'template.js', __FILE__ ),
+		array( 'slide-reveal', 'slide-reveal-notes' ),
+		filemtime( dirname( __FILE__ ) . '/template.js' ),
+		true
+	);
+
+	$post_id = get_the_ID();
+	$contain = (bool) get_post_meta( $post_id, 'presentation-contain', true ) ?: false;
+
+	wp_localize_script( 'slide-template', 'slideTemplate', array(
+		'revealSettings' => array(
+			'transition' => get_post_meta( $post_id, 'presentation-transition', true ) ?: 'none',
+			'backgroundTransition' => get_post_meta( $post_id, 'presentation-background-transition', true ) ?: 'none',
+			'transitionSpeed' => get_post_meta( $post_id, 'presentation-transition-speed', true ) ?: 'default',
+			'controls' => (bool) get_post_meta( $post_id, 'presentation-controls', true ) ?: false,
+			'progress' => (bool) get_post_meta( $post_id, 'presentation-progress', true ) ?: false,
+			'hash' => true,
+			'history' => true,
+			'preloadIframes' => true,
+			'hideAddressBar' => true,
+			'height' => 720,
+			'width' => (int) get_post_meta( $post_id, 'presentation-width', true ) ?: 960,
+			'margin' => $contain ? 0 : 0.08,
+			'keyboard' => array(
+				'38' => 'prev',
+				'40' => 'next',
+			),
+			'overview' => false,
+			// We center in CSS.
+			'center' => false,
+			'pdfMaxPagesPerSlide' => 1
+		),
+		'contain' => $contain
+	) );
+
 	wp_enqueue_style(
 		'slide-reveal',
 		plugins_url( 'reveal/reveal.min.css', __FILE__ ),
