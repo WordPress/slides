@@ -36,10 +36,6 @@
                 <div class="timer">
                     <span class="hours-value">00</span><span class="minutes-value">:00</span><span class="seconds-value">:00</span>
                 </div>
-                <div>
-                    <button id="editor" data-href="<?php echo get_edit_post_link() ?>"><?php esc_html_e( 'Presentation editor (public)', 'slide' ); ?></button>
-                    <div style="font-size: 14px;margin-top:5px;"><?php esc_html_e( 'This will exit speaker view. To enter speaker view again, use the browser back button, then click the "Speaker View" button in the admin bar.', 'slide' ); ?></div>
-                </div>
             </div>
         </div>
         <div class="speaker-controls-notes">
