@@ -119,6 +119,10 @@
 			display: flex;
 		}
 
+		.wp-block-media-text.has-media-on-the-right {
+			flex-direction: row-reverse;
+		}
+
 		.wp-block-media-text__media,
 		.wp-block-media-text__content {
 			flex-basis: 50%;
