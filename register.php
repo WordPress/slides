@@ -37,6 +37,7 @@ register_post_type( 'presentation', array(
     'has_archive' => true,
     'hierarchical' => false,
     'menu_position' => null,
+    'menu_icon' => 'dashicons-slides',
     'supports' => array(
         'title',
         'editor',
