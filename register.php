@@ -27,18 +27,20 @@ register_post_type( 'presentation', array(
         'items_list_navigation' => _x( 'Presentations list navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'slide' ),
         'items_list'            => _x( 'Presentations list', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'slide' ),
     ),
-    'public' => true,
+    'public'             => true,
     'publicly_queryable' => true,
-    'show_ui' => true,
-    'show_in_menu' => true,
-    'query_var' => true,
-    'rewrite' => array( 'slug' => 'presentation' ),
-    'capability_type' => 'post',
-    'has_archive' => true,
-    'hierarchical' => false,
-    'menu_position' => null,
-    'menu_icon' => 'dashicons-slides',
-    'supports' => array(
+    'show_ui'            => true,
+    'show_in_menu'       => true,
+    'query_var'          => true,
+    'rewrite'            => array(
+      'slug' => 'presentation'
+    ),
+    'capability_type'    => 'post',
+    'has_archive'        => true,
+    'hierarchical'       => false,
+    'menu_position'      => null,
+    'menu_icon'          => 'dashicons-slides',
+    'supports'           => array(
         'title',
         'editor',
         'author',
@@ -47,7 +49,7 @@ register_post_type( 'presentation', array(
         'custom-fields',
         'revisions'
     ),
-    'show_in_rest' => true,
+    'show_in_rest'       => true,
 ) );
 
 foreach ( array(
