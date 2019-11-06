@@ -482,10 +482,10 @@ registerPlugin('slide', {
               href: addQueryArgs(link, { 'print-pdf': true }),
               target: '_blank'
             },
-            __('Print (Save as PDF).', 'slides')
+            __('Print (Save as PDF).', 'slide')
           ),
           e('br'),
-          __('Enable backgrounds and remove margins.', 'slides')
+          __('Enable backgrounds and remove margins.', 'slide')
         )
       )
     ];
