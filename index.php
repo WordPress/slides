@@ -28,7 +28,7 @@ add_action( 'admin_notices', function() {
 
 	$data = get_plugin_data( WP_PLUGIN_DIR . '/gutenberg/gutenberg.php' );
 
-	if ( version_compare( $data[ 'Version' ], '6.7' ) === -1 ) {
+	if ( -1 === version_compare( $data[ 'Version' ], '6.7' ) ) {
 		?>
 		<div class="notice notice-error is-dismissible">
 			<p><?php _e( '"Slide" needs "Gutenberg" version 6.7. Please update.', 'slide' ); ?></p>
@@ -38,7 +38,7 @@ add_action( 'admin_notices', function() {
 } );
 
 add_action( 'admin_enqueue_scripts', function() {
-	if ( get_post_type() !== 'presentation' ) {
+	if ( 'presentation' !== get_post_type() ) {
 		return;
 	}
 
@@ -224,7 +224,7 @@ foreach ( array(
 	'load-post-new.php',
 ) as $tag ) {
     add_action( $tag, function() {
-		if ( get_current_screen()->post_type !== 'presentation' ) {
+		if ( 'presentation' !== get_current_screen()->post_type ) {
 			return;
 		}
 
@@ -263,7 +263,7 @@ foreach ( array(
 }
 
 add_filter( 'block_editor_settings', function( $settings ) {
-	if ( get_current_screen()->post_type !== 'presentation' ) {
+	if ( 'presentation' !== get_current_screen()->post_type ) {
 		return $settings;
 	}
 
@@ -272,7 +272,7 @@ add_filter( 'block_editor_settings', function( $settings ) {
 }, 99999 );
 
 add_filter( 'default_content', function( $post_content, $post ) {
-	if ( $post->post_type !== 'presentation' ) {
+	if ( 'presentation' !== $post->post_type ) {
 		return $post_content;
 	}
 
@@ -284,7 +284,7 @@ add_filter( 'render_block', function( $block_content, $block ) {
 		return $block_content;
 	}
 
-	if ( $block[ 'blockName' ] !== 'slide/slide' ) {
+	if ( 'slide/slide' !== $block[ 'blockName' ] ) {
 		return $block_content;
 	}
 
