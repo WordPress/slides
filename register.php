@@ -32,7 +32,7 @@ register_post_type( 'presentation', array(
     'show_ui' => true,
     'show_in_menu' => true,
     'query_var' => true,
-    'rewrite' => array( 'slug' => 'presentation' ),
+    'rewrite' => array( 'slug' => _x( 'presentation', 'slug', 'slide' ) ),
     'capability_type' => 'post',
     'has_archive' => true,
     'hierarchical' => false,
