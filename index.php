@@ -1,7 +1,7 @@
 <?php
 
-/**
- * Plugin Name: Slides
+/*
+ * Plugin Name: Slides & Presentations
  * Plugin URI:  https://wordpress.org/plugins/slide/
  * Description: Allows you to create presentations with the block editor.
  * Version:     0.0.38
@@ -10,32 +10,6 @@
  * Text Domain: slide
  * License:     GPL-2.0+
  */
-
-add_action( 'admin_notices', function() {
-	$has_gutenberg = is_plugin_active( 'gutenberg/gutenberg.php' );
-
-	if ( ! $has_gutenberg ) {
-		?>
-		<div class="notice notice-error is-dismissible">
-			<p><?php echo wp_sprintf(
-				__( '"Slides" needs %s to be active.', 'slide' ),
-				'<a href="' . esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=gutenberg' ) ) . '">Gutenberg</a>'
-			); ?></p>
-		</div>
-		<?php
-		return;
-	}
-
-	$data = get_plugin_data( WP_PLUGIN_DIR . '/gutenberg/gutenberg.php' );
-
-	if ( version_compare( $data[ 'Version' ], '6.7' ) === -1 ) {
-		?>
-		<div class="notice notice-error is-dismissible">
-			<p><?php _e( '"Slides" needs "Gutenberg" version 6.7. Please update.', 'slide' ); ?></p>
-		</div>
-		<?php
-	}
-} );
 
 add_action( 'admin_enqueue_scripts', function() {
 	if ( get_post_type() !== 'presentation' ) {
