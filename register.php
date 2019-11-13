@@ -33,7 +33,7 @@ register_post_type( 'presentation', array(
     'show_in_menu' => true,
     'menu_icon' => 'dashicons-media-interactive',
     'query_var' => true,
-    'rewrite' => array( 'slug' => 'presentation' ),
+    'rewrite' => array( 'slug' => _x( 'presentation', 'slug', 'slide' ) ),
     'capability_type' => 'post',
     'has_archive' => true,
     'hierarchical' => false,
