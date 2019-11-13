@@ -5,7 +5,7 @@
     Requires at least: 5.3
     Requires PHP:      5.6
     Tested up to:      5.3
-    Stable tag:        0.0.38
+    Stable tag:        0.0.39
     License:           GPL-2.0-or-later
     License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
