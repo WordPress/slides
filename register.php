@@ -31,6 +31,7 @@ register_post_type( 'presentation', array(
     'publicly_queryable' => true,
     'show_ui' => true,
     'show_in_menu' => true,
+    'menu_icon' => 'dashicons-media-interactive',
     'query_var' => true,
     'rewrite' => array( 'slug' => 'presentation' ),
     'capability_type' => 'post',
