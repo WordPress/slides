@@ -195,7 +195,10 @@
 		}
 	</style>
 	<style>
-		<?php echo esc_html( get_post_meta( get_the_ID(), 'presentation-css', true ) ); ?>
+		<?php
+			// Allow quotes.
+			echo str_replace( '<', '', get_post_meta( get_the_ID(), 'presentation-css', true ) );
+		?>
 	</style>
 </head>
 <body>
