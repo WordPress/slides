@@ -65,6 +65,7 @@
 // Admin bar buttons.
 window.addEventListener('DOMContentLoaded', () => {
   const bar = document.querySelector('ul#wp-admin-bar-root-default');
+  const { __ } = window.wp.i18n;
 
   if (!bar) {
     return;
@@ -74,8 +75,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const speakerLi = document.createElement('li');
   const fullscreenButton = document.createElement('button');
   const speakerButton = document.createElement('button');
-  const fullscreenText = document.createTextNode('Fullscreen');
-  const speakerText = document.createTextNode('Speaker View');
+  const fullscreenText = document.createTextNode(__('Fullscreen', 'slide'));
+  const speakerText = document.createTextNode(__('Speaker View', 'slide'));
 
   fullscreenButton.appendChild(fullscreenText);
   fullscreenLi.appendChild(fullscreenButton);

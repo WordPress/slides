@@ -161,7 +161,7 @@ add_action( 'wp_enqueue_scripts', function() {
 	wp_enqueue_script(
 		'slide-template',
 		plugins_url( 'template.js', __FILE__ ),
-		array( 'slide-reveal', 'slide-reveal-notes' ),
+		array( 'slide-reveal', 'slide-reveal-notes', 'wp-i18n' ),
 		filemtime( dirname( __FILE__ ) . '/template.js' ),
 		true
 	);
