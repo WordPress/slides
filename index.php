@@ -53,6 +53,18 @@ add_action( 'admin_enqueue_scripts', function() {
 		array(),
 		filemtime( dirname( __FILE__ ) . '/common.css' )
 	);
+
+	global $wp_styles;
+
+	$template_directory_uri = get_template_directory_uri();
+
+	foreach ( $wp_styles->queue as $handle ) {
+		$info = $wp_styles->registered[ $handle ];
+
+		if ( substr( $info->src, 0, strlen( $template_directory_uri ) ) === $template_directory_uri ) {
+			wp_dequeue_style( $handle );
+		}
+	}
 }, 99999 );
 
 add_action( 'wp_enqueue_scripts', function() {
@@ -101,10 +113,12 @@ add_action( 'wp_enqueue_scripts', function() {
 
 	global $wp_styles;
 
+	$template_directory_uri = get_template_directory_uri();
+
 	foreach ( $wp_styles->queue as $handle ) {
 		$info = $wp_styles->registered[ $handle ];
 
-		if ( $info->src === get_stylesheet_uri() ) {
+		if ( substr( $info->src, 0, strlen( $template_directory_uri ) ) === $template_directory_uri ) {
 			wp_dequeue_style( $handle );
 		}
 	}
