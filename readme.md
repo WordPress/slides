@@ -15,7 +15,7 @@ Allows you to create presentations with the WordPress block editor.
 
 **This plugin requires WordPress version 5.3 or higher! It works best if you also have the [Gutenberg](https://wordpress.org/plugins/gutenberg/) plugin installed and up-to-date.**
 
-Report issues, or collaborate, on [Github](https://github.com/ellatrix/slides/issues).
+Report issues, or collaborate, on [GitHub](https://github.com/ellatrix/slides/issues).
 
 * Creates a custom post type "Presentation", which will render as a presentation on the front end using [Reveal.js](https://revealjs.com).
 * Enables the block editor with a "Slide" block, which can be used as a container for each slide in the presentation.
