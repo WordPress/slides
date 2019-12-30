@@ -82,3 +82,22 @@ foreach ( array(
         'type' => 'string',
     ) );
 }
+
+wp_register_script(
+	'slide',
+	plugins_url( 'index.js', __FILE__ ),
+	array( 'wp-i18n' ),
+	filemtime( dirname( __FILE__ ) . '/index.js' )
+);
+
+wp_register_script(
+	'slide-template',
+	plugins_url( 'template.js', __FILE__ ),
+	array( 'wp-i18n' ),
+	filemtime( dirname( __FILE__ ) . '/template.js' )
+);
+
+if ( function_exists( 'wp_set_script_translations' ) ) {
+	wp_set_script_translations( 'slide', 'slide' );
+	wp_set_script_translations( 'slide-template', 'slide' );
+}
