@@ -26,7 +26,7 @@
                 </div>
                 <h4 class="label"><?php esc_html_e( 'Slide', 'slide' ); ?></h4>
                 <div class="slide-count">
-                    <span class="slide-current-number">&hellip;</span> of <span class="slide-total-number">&hellip;</span>
+                    <span class="slide-current-number">&hellip;</span> <?php esc_html_e( 'of', 'slide' ); ?> <span class="slide-total-number">&hellip;</span>
                 </div>
                 <h4 class="label"><?php esc_html_e( 'Time', 'slide' ); ?></h4>
                 <div class="clock">
